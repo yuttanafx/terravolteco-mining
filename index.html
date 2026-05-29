@@ -28,14 +28,39 @@
     </div>
 
     <!-- ส่วน Dashboard -->
-    <div class="card">
-        <div class="status">
-            <h2>สถานะเครื่องขุดของคุณ</h2>
-            <span style="color:var(--neon)">● ออนไลน์</span>
-        </div>
-        <p>ตำแหน่งเครื่อง: <strong>Section B - Rack A12</strong></p>
-        <div class="grid" id="map"></div>
+    <!-- ในไฟล์ index.html ให้หา <div class="card"> ที่แสดงสถานะเครื่องขุดเดิม แล้วแทนที่ด้วยบล็อกนี้ครับ -->
+
+<div class="card" id="member-portal">
+    <h2>สถานะสมาชิกของคุณ</h2>
+    <div id="display">
+        <!-- ข้อมูลจะถูกดึงมาโชว์ตรงนี้โดยอัตโนมัติ -->
     </div>
+</div>
+
+<script>
+    // 1. ดึงค่า ID จากลิงก์ (เช่น .../?id=A12)
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+
+    // 2. ฐานข้อมูลลูกค้า (คุณมาเพิ่มชื่อลูกค้าที่นี่)
+    const userData = {
+        "A12": { name: "คุณสมชาย", rack: "Section B - Rack A12", status: "ชำระแล้ว" },
+        "B05": { name: "คุณสมหญิง", rack: "Section A - Rack B05", status: "ค้างชำระ" }
+    };
+
+    // 3. แสดงผล
+    const display = document.getElementById('display');
+    if (userId && userData[userId]) {
+        const user = userData[userId];
+        display.innerHTML = `
+            <p>สมาชิก: <strong>${user.name}</strong></p>
+            <p>ตำแหน่ง: <strong>${user.rack}</strong></p>
+            <p>สถานะ: <strong style="color:${user.status === 'ชำระแล้ว' ? 'var(--neon)' : 'orange'}">${user.status}</strong></p>
+        `;
+    } else {
+        display.innerHTML = `<p style="color:red;">กรุณาเข้าสู่ระบบผ่านลิงก์เฉพาะบุคคลของคุณ</p>`;
+    }
+</script>
 
     <!-- ส่วนชำระเงิน -->
     <div class="card">
