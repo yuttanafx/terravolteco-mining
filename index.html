@@ -648,9 +648,9 @@ body::before{
                         สมัครใช้บริการผ่าน LINE
                     </a>
 
-                    <button class="btn" onclick="showPayment()">
-    ชำระเงินผ่านบัญชีบริษัท
-</button>
+                    <button class="btn btn-outline">
+                        ดู Facility
+                    </button>
 
                 </div>
 
@@ -770,7 +770,7 @@ body::before{
             <div class="actions">
 
                 <button class="btn" onclick="showPayment()">
-                    ชำระเงินด้วย TVE Token
+                    ชำระเงินผ่านบัญชีบริษัท
                 </button>
 
                 <button class="btn btn-outline">
@@ -1009,6 +1009,10 @@ if(userId && userData[userId]){
    PAYMENT LOGIC
 ========================= */
 
+/* =========================
+   PAYMENT LOGIC
+========================= */
+
 function showPayment(){
 
     alert(`
@@ -1028,6 +1032,7 @@ function showPayment(){
     `);
 
 }
+
 /* =========================
    LIVE RACK EFFECT
 ========================= */
