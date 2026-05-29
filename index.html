@@ -12,44 +12,45 @@
         .btn { background: var(--neon); color: black; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
         .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .rack { height: 40px; background: #222; border: 1px solid #444; }
-        .rack.active { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
-        .status { display: flex; justify-content: space-between; align-items: center; }
+        .rack.active { background: var(--neon); box-shadow: 0 0 10px var(--neon); border: 1px solid #fff; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Terravolteco Facility</h1>
     
-    <!-- ส่วนแจ้งความประสงค์ -->
     <div class="card">
         <h2>อยากวางเครื่องขุดกับเรา?</h2>
         <p>ยกระดับการขุดด้วยพลังงานสะอาด 100% จากเทคโนโลยี Flywheel ของเรา</p>
         <a href="https://line.me/ti/p/YourLineLink" class="btn">สมัครใช้บริการผ่าน Line</a>
     </div>
 
-    <!-- ส่วน Dashboard -->
-    <!-- ในไฟล์ index.html ให้หา <div class="card"> ที่แสดงสถานะเครื่องขุดเดิม แล้วแทนที่ด้วยบล็อกนี้ครับ -->
+    <div class="card" id="member-portal">
+        <h2>สถานะสมาชิกของคุณ</h2>
+        <div id="display"></div>
+        <div class="grid" id="map"></div>
+    </div>
 
-<div class="card" id="member-portal">
-    <h2>สถานะสมาชิกของคุณ</h2>
-    <div id="display">
-        <!-- ข้อมูลจะถูกดึงมาโชว์ตรงนี้โดยอัตโนมัติ -->
+    <div class="card">
+        <h2>ชำระเงินรายเดือน</h2>
+        <button class="btn" onclick="alert('แสดง QR Code สำหรับชำระเงิน')">ชำระเงินด้วย TVE Token</button>
     </div>
 </div>
 
 <script>
-    // 1. ดึงค่า ID จากลิงก์ (เช่น .../?id=A12)
+    // 1. ดึงข้อมูลจาก URL
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('id');
 
-    // 2. ฐานข้อมูลลูกค้า (คุณมาเพิ่มชื่อลูกค้าที่นี่)
     const userData = {
-        "A12": { name: "คุณสมชาย", rack: "Section B - Rack A12", status: "ชำระแล้ว" },
-        "B05": { name: "คุณสมหญิง", rack: "Section A - Rack B05", status: "ค้างชำระ" }
+        "A12": { name: "คุณสมชาย", rack: "Section B - Rack A12", status: "ชำระแล้ว", position: 12 },
+        "B05": { name: "คุณสมหญิง", rack: "Section A - Rack B05", status: "ค้างชำระ", position: 5 }
     };
 
-    // 3. แสดงผล
+    // 2. แสดงข้อมูลสมาชิก
     const display = document.getElementById('display');
+    const map = document.getElementById('map');
+    
     if (userId && userData[userId]) {
         const user = userData[userId];
         display.innerHTML = `
@@ -57,25 +58,15 @@
             <p>ตำแหน่ง: <strong>${user.rack}</strong></p>
             <p>สถานะ: <strong style="color:${user.status === 'ชำระแล้ว' ? 'var(--neon)' : 'orange'}">${user.status}</strong></p>
         `;
+        
+        // สร้างตู้ขุด 36 ตู้
+        for(let i=0; i<36; i++) {
+            let rack = document.createElement('div');
+            rack.className = 'rack ' + (i === user.position ? 'active' : '');
+            map.appendChild(rack);
+        }
     } else {
-        display.innerHTML = `<p style="color:red;">กรุณาเข้าสู่ระบบผ่านลิงก์เฉพาะบุคคลของคุณ</p>`;
-    }
-</script>
-
-    <!-- ส่วนชำระเงิน -->
-    <div class="card">
-        <h2>ชำระเงินรายเดือน</h2>
-        <p>สถานะ: <strong style="color:orange">รอการชำระเงิน (Due: 15 มิ.ย. 66)</strong></p>
-        <button class="btn" onclick="alert('แสดง QR Code สำหรับชำระเงิน')">ชำระเงิน </button>
-    </div>
-</div>
-
-<script>
-    const map = document.getElementById('map');
-    for(let i=0; i<36; i++) {
-        let rack = document.createElement('div');
-        rack.className = 'rack ' + (i === 12 ? 'active' : ''); // สมมติว่าเครื่องลูกค้าอยู่ที่ช่อง 12
-        map.appendChild(rack);
+        display.innerHTML = `<p style="color:red;">กรุณาเข้าสู่ระบบผ่านลิงก์เฉพาะบุคคลของคุณ (เช่น ?id=A12)</p>`;
     }
 </script>
 </body>
