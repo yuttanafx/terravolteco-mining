@@ -1,24 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-    <title>Terravolteco Mining</title> 
+    <meta charset="UTF-8">
+    <title>Terravolteco | Mining Management</title>
     <style>
-        body { background: #000; color: #00ff88; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .mining-grid { display: grid; grid-template-columns: repeat(8, 50px); gap: 10px; }
-        .rack { width: 50px; height: 50px; background: #111; border: 1px solid #333; }
-        .rack.active { background: #004422; box-shadow: inset 0 0 10px #00ff88; border: 1px solid #00ff88; }
+        :root { --neon: #00ff88; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: #111; border: 1px solid #333; padding: 25px; border-radius: 15px; margin-bottom: 20px; }
+        h1, h2 { color: var(--neon); text-transform: uppercase; }
+        .btn { background: var(--neon); color: black; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
+        .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
+        .rack { height: 40px; background: #222; border: 1px solid #444; }
+        .rack.active { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+        .status { display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
+<div class="container">
     <h1>Terravolteco Facility</h1>
-    <div class="mining-grid" id="grid"></div>
-    <script>
-        const grid = document.getElementById('grid');
-        for(let i=0; i<48; i++) {
-            let div = document.createElement('div');
-            div.className = 'rack ' + (Math.random() > 0.5 ? 'active' : '');
-            grid.appendChild(div);
-        }
-    </script>
+    
+    <!-- ส่วนแจ้งความประสงค์ -->
+    <div class="card">
+        <h2>อยากวางเครื่องขุดกับเรา?</h2>
+        <p>ยกระดับการขุดด้วยพลังงานสะอาด 100% จากเทคโนโลยี Flywheel ของเรา</p>
+        <a href="https://line.me/ti/p/YourLineLink" class="btn">สมัครใช้บริการผ่าน Line</a>
+    </div>
+
+    <!-- ส่วน Dashboard -->
+    <div class="card">
+        <div class="status">
+            <h2>สถานะเครื่องขุดของคุณ</h2>
+            <span style="color:var(--neon)">● ออนไลน์</span>
+        </div>
+        <p>ตำแหน่งเครื่อง: <strong>Section B - Rack A12</strong></p>
+        <div class="grid" id="map"></div>
+    </div>
+
+    <!-- ส่วนชำระเงิน -->
+    <div class="card">
+        <h2>ชำระเงินรายเดือน</h2>
+        <p>สถานะ: <strong style="color:orange">รอการชำระเงิน (Due: 15 มิ.ย. 66)</strong></p>
+        <button class="btn" onclick="alert('แสดง QR Code สำหรับชำระด้วย TVE Token')">ชำระเงินด้วย TVE Token</button>
+    </div>
+</div>
+
+<script>
+    const map = document.getElementById('map');
+    for(let i=0; i<36; i++) {
+        let rack = document.createElement('div');
+        rack.className = 'rack ' + (i === 12 ? 'active' : ''); // สมมติว่าเครื่องลูกค้าอยู่ที่ช่อง 12
+        map.appendChild(rack);
+    }
+</script>
 </body>
 </html>
