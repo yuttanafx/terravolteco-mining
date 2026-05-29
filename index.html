@@ -648,9 +648,9 @@ body::before{
                         สมัครใช้บริการผ่าน LINE
                     </a>
 
-                    <button class="btn btn-outline">
-                        ดู Facility
-                    </button>
+                    <button class="btn" onclick="showPayment()">
+    ชำระเงินผ่านบัญชีบริษัท
+</button>
 
                 </div>
 
@@ -1012,20 +1012,22 @@ if(userId && userData[userId]){
 function showPayment(){
 
     alert(`
-TVE TOKEN PAYMENT
+ชำระเงินค่าบริการรายเดือน
 
-Wallet:
-0x170C62cAF21EE43A8527e0D858eB1ca76b79b342
+ธนาคาร:
+กสิกรไทย
 
-Network:
-BSC / ETH
+ชื่อบัญชี:
+บริษัท เทอร์ราโวลท์อีโค่ จำกัด
 
-Status:
-Quantum Gateway Active
+เลขบัญชี:
+220-3-446-139
+
+สถานะ:
+ระบบรับชำระออนไลน์พร้อมใช้งาน
     `);
 
 }
-
 /* =========================
    LIVE RACK EFFECT
 ========================= */
