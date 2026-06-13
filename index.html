@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -212,7 +212,7 @@ nav{
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,0.03);margin-bottom:6px;font-size:12px;}
 .pay-date{color:var(--muted);}
 .pay-amount{color:var(--neon);font-family:'Orbitron';font-size:12px;}
-.pay-status-badge{font-size:10px;padding:3px 9px;border-radius:999px;}
+.pay-status-badge{font-size:10px;padding:3px 9px;border-radius999px;}
 .pay-status-badge.ok{background:rgba(0,255,174,0.1);color:var(--neon);border:1px solid rgba(0,255,174,0.2);}
 .pay-status-badge.due{background:rgba(255,184,77,0.1);color:var(--warning);border:1px solid rgba(255,184,77,0.2);}
 .pay-status-badge.pending-review{background:rgba(100,120,200,0.1);color:#93c5fd;border:1px solid rgba(100,120,200,0.2);}
@@ -286,16 +286,13 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
 </head>
 <body>
 
-<!-- LOADING -->
 <div class="loading-overlay" id="loader">
   <div class="loading-spinner"></div>
   <div class="loading-text">INITIALIZING…</div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- TOOLTIP -->
 <div class="tooltip" id="tooltip">
   <div class="tooltip-title" id="tt-title"></div>
   <div class="tooltip-row"><span>สถานะ</span><span id="tt-status"></span></div>
@@ -304,7 +301,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   <div class="tooltip-row"><span>Uptime</span><span id="tt-uptime"></span></div>
 </div>
 
-<!-- PAYMENT MODAL -->
 <div class="modal-bg" id="payModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('payModal')">✕</button>
@@ -335,7 +331,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </div>
 </div>
 
-<!-- ══════════════ PAGE: LANDING ══════════════ -->
 <div class="page active" id="page-landing">
   <nav>
     <div class="nav-logo" onclick="goTo('landing')">
@@ -398,7 +393,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </div>
 </div>
 
-<!-- ══════════════ PAGE: LOGIN ══════════════ -->
 <div class="page" id="page-login">
   <div class="auth-wrap">
     <div class="auth-box">
@@ -422,7 +416,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </div>
 </div>
 
-<!-- ══════════════ PAGE: REGISTER ══════════════ -->
 <div class="page" id="page-register">
   <nav>
     <div class="nav-logo" onclick="goTo('landing')">
@@ -440,7 +433,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
       <p style="color:var(--muted);font-size:14px;">กรอกข้อมูลและเลือกตำแหน่ง rack ของคุณ</p>
     </div>
 
-    <!-- step indicator -->
     <div class="reg-steps">
       <div class="reg-step active" id="rst-1"><div class="reg-step-dot">1</div><span>ข้อมูลส่วนตัว</span></div>
       <div class="reg-step" id="rst-2"><div class="reg-step-dot">2</div><span>เลือก Rack</span></div>
@@ -449,7 +441,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
     </div>
 
     <div class="card">
-      <!-- PANEL 1: ข้อมูลส่วนตัว -->
       <div class="reg-panel active" id="rp-1">
         <div class="form-group">
           <label>ชื่อ-นามสกุล *</label>
@@ -475,7 +466,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
         <button class="btn" style="width:100%" onclick="regNext(1)">ถัดไป →</button>
       </div>
 
-      <!-- PANEL 2: เลือก Rack -->
       <div class="reg-panel" id="rp-2">
         <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">เลือกตำแหน่งที่คุณต้องการวางเครื่อง (คลิกช่องว่าง)</p>
         <div class="rack-pick-legend">
@@ -495,7 +485,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
         </div>
       </div>
 
-      <!-- PANEL 3: เลือกแพ็กเกจ -->
       <div class="reg-panel" id="rp-3">
         <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">เลือกแพ็กเกจที่เหมาะกับเครื่องของคุณ</p>
         <div id="reg-pricing" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
@@ -508,7 +497,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
         </div>
       </div>
 
-      <!-- PANEL 4: ยืนยัน -->
       <div class="reg-panel" id="rp-4">
         <div id="reg-summary" style="margin-bottom:20px;"></div>
         <div class="form-error" id="reg-error-4"></div>
@@ -522,7 +510,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </div>
 </div>
 
-<!-- ══════════════ PAGE: DASHBOARD ══════════════ -->
 <div class="page" id="page-dashboard">
   <nav>
     <div class="nav-logo" onclick="goTo('landing')">
@@ -537,7 +524,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </nav>
   <div class="container">
     <div class="dash-grid">
-      <!-- LEFT: member card -->
       <div>
         <div class="card member-card" id="dash-member-card">
           <div class="avatar">👨‍💻</div>
@@ -548,6 +534,19 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
           <div class="info-row"><span class="label">Hashrate</span><span class="val" id="dash-hashrate">—</span></div>
           <div class="info-row"><span class="label">Temperature</span><span class="val" id="dash-temp">—</span></div>
           <div class="info-row"><span class="label">Uptime</span><span class="val" id="dash-uptime">—</span></div>
+          
+          <div class="info-row" style="margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+            <span class="label">Web3 Wallet</span>
+            <span class="val" id="web3-wallet-addr" style="font-size: 11px; color: var(--cyan);">ไม่ได้เชื่อมต่อ</span>
+          </div>
+          <div class="info-row" id="web3-balance-row" style="display: none;">
+            <span class="label">ยอดเงินคงเหลือ</span>
+            <span class="val" id="web3-balance-val">—</span>
+          </div>
+          <button class="btn btn-outline" style="width:100%; margin-top:10px; border-color: var(--cyan); color: var(--cyan); font-size:13px;" id="btn-connect-wallet" onclick="connectWallet()">
+            🦊 เชื่อมต่อ Crypto Wallet
+          </button>
+
           <div id="dash-status-badge"></div>
           <div class="pay-history">
             <h4>PAYMENT HISTORY</h4>
@@ -556,7 +555,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
           <button class="btn" style="width:100%;margin-top:16px;" onclick="openModal('payModal')">ชำระค่าบริการ</button>
         </div>
       </div>
-      <!-- RIGHT -->
       <div>
         <div class="card" style="margin-bottom:24px;">
           <div class="card-title"><h3>Rack Map</h3><span style="font-size:12px;color:var(--muted);">Realtime</span></div>
@@ -584,7 +582,6 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   </div>
 </div>
 
-<!-- ═══════════════ FIREBASE + APP LOGIC ═══════════════ -->
 <script type="module">
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, getDocs,
@@ -595,14 +592,15 @@ import { getAuth, createUserWithEmailAndPassword,
          signInWithEmailAndPassword, signOut,
          onAuthStateChanged,
          sendPasswordResetEmail }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { ethers }                                 from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
 
 // ── Firebase Config ────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "AIzaSyD2sAI9Rd6bchY7bK2gtJQitZTQiITx_wY",
-  authDomain:        "cryptocurrency-mining-rig.firebaseapp.com",
-  projectId:         "cryptocurrency-mining-rig",
+  apiKey:             "AIzaSyD2sAI9Rd6bchY7bK2gtJQitZTQiITx_wY",
+  authDomain:         "cryptocurrency-mining-rig.firebaseapp.com",
+  projectId:          "cryptocurrency-mining-rig",
   messagingSenderId: "86905840755",
-  appId:             "1:86905840755:web:56281f6aa1768fce457606"
+  appId:              "1:86905840755:web:56281f6aa1768fce457606"
 };
 
 // ── Cloudinary ─────────────────────────────────────────
@@ -621,6 +619,11 @@ let packages      = [];
 let regState      = { step:1, rackId:null, packageIdx:null };
 let unsubRacks    = null;
 
+// Web3 State
+let walletAddress = null;
+let web3Provider  = null;
+let web3Signer    = null;
+
 // ── DEMO FALLBACK ──────────────────────────────────────
 const DEMO_STATS = { hashrate:"8.4 EH/s", miners:"3,264", temp:"21°C" };
 const DEMO_PACKAGES = [
@@ -630,7 +633,7 @@ const DEMO_PACKAGES = [
 ];
 
 // ═══════════════════════════════════════════════════════
-// NAV
+// NAV & ROUTING
 // ═══════════════════════════════════════════════════════
 window.goTo = function(page){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -639,7 +642,7 @@ window.goTo = function(page){
 };
 
 // ═══════════════════════════════════════════════════════
-// AUTH STATE
+// AUTH STATE CHANGED
 // ═══════════════════════════════════════════════════════
 onAuthStateChanged(auth, async user => {
   currentUser = user;
@@ -652,37 +655,49 @@ onAuthStateChanged(auth, async user => {
 });
 
 // ═══════════════════════════════════════════════════════
-// INIT LANDING DATA
+// CORE INITIALIZATION & PRICING
 // ═══════════════════════════════════════════════════════
+async function loadPackages(){
+  try{
+    const snap = await getDoc(doc(db,"settings","packages"));
+    packages = (snap.exists() && snap.data().list) ? snap.data().list : DEMO_PACKAGES;
+  }catch(e){ 
+    console.log("Firebase packages load failed, fallback to Demo:", e);
+    packages = DEMO_PACKAGES; 
+  }
+}
+
 async function initLanding(){
-  // stats
+  // โหลดสถิติ (Stats)
   try{
     const snap = await getDoc(doc(db,"settings","stats"));
     const d = snap.exists() ? snap.data() : DEMO_STATS;
     document.getElementById('l-hashrate').textContent = d.hashrate || "—";
     document.getElementById('l-miners').textContent   = d.miners   || "—";
     document.getElementById('l-temp').textContent     = d.temp     || "—";
+    
     onSnapshot(doc(db,"settings","stats"), s => {
       if(!s.exists()) return;
       document.getElementById('l-hashrate').textContent = s.data().hashrate || "—";
       document.getElementById('l-miners').textContent   = s.data().miners   || "—";
       document.getElementById('l-temp').textContent     = s.data().temp     || "—";
     });
-  }catch{ renderStats(DEMO_STATS); }
+  }catch{ 
+    document.getElementById('l-hashrate').textContent = DEMO_STATS.hashrate;
+    document.getElementById('l-miners').textContent   = DEMO_STATS.miners;
+    document.getElementById('l-temp').textContent     = DEMO_STATS.temp; 
+  }
 
-  // packages
+  // โหลดและจัดการการเรนเดอร์แพ็กเกจราคา
   await loadPackages();
   renderPricingLanding(packages);
   renderPricingRegister(packages);
+  
+  if(packages.length > 0) {
+    selectPlan(0); // เลือกอันแรกเป็นค่าเริ่มต้น ป้องกันค่าหลุดเป็น null
+  }
 }
 initLanding();
-
-async function loadPackages(){
-  try{
-    const snap = await getDoc(doc(db,"settings","packages"));
-    packages = (snap.exists() && snap.data().list) ? snap.data().list : DEMO_PACKAGES;
-  }catch{ packages = DEMO_PACKAGES; }
-}
 
 function renderPricingLanding(plans){
   document.getElementById('l-pricing').innerHTML = plans.map(p => `
@@ -725,14 +740,82 @@ window.selectPlan = function(i){
 };
 
 // ═══════════════════════════════════════════════════════
-// RACK PICKER (register)
+// WEB3 CONNECTIVITY LOGIC
+// ═══════════════════════════════════════════════════════
+window.connectWallet = async function() {
+  const btn = document.getElementById('btn-connect-wallet');
+  if (typeof window.ethereum !== 'undefined') {
+    try {
+      btn.disabled = true;
+      btn.textContent = 'กำลังเชื่อมต่อ…';
+      
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      walletAddress = accounts[0];
+      
+      web3Provider = new ethers.BrowserProvider(window.ethereum);
+      web3Signer = await web3Provider.getSigner();
+      
+      const shortAddr = walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4);
+      document.getElementById('web3-wallet-addr').textContent = shortAddr;
+      document.getElementById('web3-wallet-addr').style.color = 'var(--neon)';
+      
+      btn.textContent = '🔌 ตัดการเชื่อมต่อกระเป๋า';
+      btn.onclick = disconnectWallet;
+      btn.disabled = false;
+      
+      await updateWalletBalance();
+      showToast('🦊 เชื่อมต่อกระเป๋า Web3 สำเร็จ!');
+    } catch (err) {
+      console.error(err);
+      showToast('❌ การเชื่อมต่อถูกปฏิเสธ', 'error');
+      resetWalletUI();
+    }
+  } else {
+    showToast('❌ ไม่พบส่วนขยาย Web3 Wallet (เช่น MetaMask)', 'error');
+    window.open('https://metamask.io/download/', '_blank');
+  }
+};
+
+window.disconnectWallet = function() {
+  walletAddress = null;
+  web3Provider = null;
+  web3Signer = null;
+  showToast('ตัดการเชื่อมต่อกระเป๋าแล้ว');
+  resetWalletUI();
+};
+
+function resetWalletUI() {
+  const btn = document.getElementById('btn-connect-wallet');
+  btn.disabled = false;
+  btn.textContent = '🦊 เชื่อมต่อ Crypto Wallet';
+  btn.onclick = connectWallet;
+  document.getElementById('web3-wallet-addr').textContent = 'ไม่ได้เชื่อมต่อ';
+  document.getElementById('web3-wallet-addr').style.color = 'var(--cyan)';
+  document.getElementById('web3-balance-row').style.display = 'none';
+}
+
+async function updateWalletBalance() {
+  if (!web3Provider || !walletAddress) return;
+  try {
+    const balance = await web3Provider.getBalance(walletAddress);
+    const bnbValue = ethers.formatEther(balance);
+    const formattedBalance = parseFloat(bnbValue).toFixed(4);
+    
+    document.getElementById('web3-balance-row').style.display = 'flex';
+    document.getElementById('web3-balance-val').textContent = `${formattedBalance} BNB`;
+  } catch (e) {
+    console.error("โหลด Balance ล้มเหลว:", e);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// RACK PICKER (Register Section)
 // ═══════════════════════════════════════════════════════
 async function loadRackPicker(){
   let rm = { A:[], B:[] };
   try{
     const snap = await getDocs(collection(db,"racks"));
     snap.forEach(d => { const r=d.data(); if(rm[r.section]) rm[r.section].push({id:d.id,...r}); });
-    // if no racks in DB, build empty grid
     if(!rm.A.length && !rm.B.length) rm = buildEmptyRacks();
     allRacks = rm;
   }catch{ rm = buildEmptyRacks(); allRacks = rm; }
@@ -765,7 +848,6 @@ function renderRackPicker(rm){
 
 window.pickRack = function(id, sec){
   regState.rackId = id;
-  // update visuals
   document.querySelectorAll('.rack-pick').forEach(el => el.classList.remove('selected'));
   document.getElementById('rp-'+id)?.classList.add('selected');
   const el = document.getElementById('reg-selected-rack');
@@ -774,7 +856,7 @@ window.pickRack = function(id, sec){
 };
 
 // ═══════════════════════════════════════════════════════
-// REGISTER STEPS
+// REGISTER WORKFLOW STEPS
 // ═══════════════════════════════════════════════════════
 window.regNext = function(step){
   const errEl = document.getElementById('reg-error-'+step);
@@ -798,7 +880,6 @@ window.regNext = function(step){
 
   if(step===3){
     if(regState.packageIdx===null) return showFieldError(errEl,'กรุณาเลือกแพ็กเกจก่อน');
-    // build summary
     const p = packages[regState.packageIdx];
     document.getElementById('reg-summary').innerHTML = `
       <div style="background:rgba(0,255,174,0.05);border:1px solid rgba(0,255,174,0.15);border-radius:16px;padding:20px;">
@@ -810,7 +891,6 @@ window.regNext = function(step){
       </div>`;
   }
 
-  // advance step
   setRegStep(step+1);
 };
 
@@ -829,7 +909,7 @@ function setRegStep(step){
 function showFieldError(el, msg){ el.textContent=msg; el.classList.add('show'); }
 
 // ═══════════════════════════════════════════════════════
-// DO REGISTER
+// ACTION OPERATIONS (Register / Auth / Logout)
 // ═══════════════════════════════════════════════════════
 window.doRegister = async function(){
   const btn = document.getElementById('reg-submit-btn');
@@ -844,15 +924,13 @@ window.doRegister = async function(){
   const pkg      = packages[regState.packageIdx];
 
   try{
-    // 1. create Firebase Auth user
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const uid  = cred.user.uid;
 
-    // 2. save member doc
     await addDoc(collection(db,"members"), {
       uid, name, email, phone,
       rackId:    regState.rackId,
-      package:   pkg.name,
+      package:    pkg.name,
       packagePrice: pkg.price,
       status:    'รอชำระเงิน',
       hashrate:  '—', temperature:'—', uptime:'—',
@@ -861,7 +939,6 @@ window.doRegister = async function(){
     });
 
     showToast('✅ สมัครสำเร็จ! ยินดีต้อนรับ');
-    // auth state change will redirect to dashboard
   }catch(e){
     let msg = e.message;
     if(e.code==='auth/email-already-in-use') msg = 'อีเมลนี้มีบัญชีอยู่แล้ว';
@@ -871,9 +948,6 @@ window.doRegister = async function(){
   }
 };
 
-// ═══════════════════════════════════════════════════════
-// LOGIN / LOGOUT
-// ═══════════════════════════════════════════════════════
 window.doLogin = async function(){
   const btn    = document.getElementById('login-btn');
   const errEl  = document.getElementById('login-error');
@@ -883,7 +957,6 @@ window.doLogin = async function(){
   btn.disabled=true; btn.textContent='กำลังเข้าสู่ระบบ…';
   try{
     await signInWithEmailAndPassword(auth, email, pw);
-    // onAuthStateChanged handles redirect
   }catch(e){
     let msg = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
     if(e.code==='auth/user-not-found') msg = 'ไม่พบบัญชีนี้';
@@ -896,6 +969,7 @@ window.doLogin = async function(){
 window.doLogout = async function(){
   if(unsubRacks) unsubRacks();
   await signOut(auth);
+  resetWalletUI();
   goTo('landing');
   showToast('ออกจากระบบแล้ว');
 };
@@ -910,7 +984,7 @@ window.doForgotPassword = async function(){
 };
 
 // ═══════════════════════════════════════════════════════
-// LOAD MEMBER DATA → DASHBOARD
+// MEMBERS PROFILE & MEMBER DASHBOARD
 // ═══════════════════════════════════════════════════════
 async function loadMemberData(uid){
   try{
@@ -927,8 +1001,7 @@ function renderDashboard(m){
   if(!m){
     document.getElementById('dash-name').textContent    = currentUser?.displayName || 'สมาชิกใหม่';
     document.getElementById('dash-email-disp').textContent = currentUser?.email || '';
-    document.getElementById('dash-status-badge').innerHTML =
-      '<div class="status-badge pending">🟠 รอดำเนินการ</div>';
+    document.getElementById('dash-status-badge').innerHTML = '<div class="status-badge pending">🟠 รอดำเนินการ</div>';
     return;
   }
   document.getElementById('dash-name').textContent         = m.name || '—';
@@ -943,7 +1016,6 @@ function renderDashboard(m){
   document.getElementById('dash-status-badge').innerHTML =
     `<div class="status-badge ${paid?'paid':'pending'}">${paid?'🟢 ACTIVE':'🟠 '+m.status}</div>`;
 
-  // payment history
   const hist = m.payments || [];
   document.getElementById('dash-pay-history').innerHTML = hist.length
     ? hist.slice(-5).reverse().map(p=>`
@@ -958,7 +1030,7 @@ function renderDashboard(m){
 }
 
 // ═══════════════════════════════════════════════════════
-// RACK MAP (dashboard)
+// RACK MAP SYNC (Dashboard Grid)
 // ═══════════════════════════════════════════════════════
 function loadRackMap(member){
   if(unsubRacks) unsubRacks();
@@ -1005,7 +1077,7 @@ function renderRackMap(rm, member){
 }
 
 // ═══════════════════════════════════════════════════════
-// PAYMENT SUBMIT
+// FIAT PAYMENT TRANSACTIONS
 // ═══════════════════════════════════════════════════════
 window._slipFile = null;
 window.previewSlip = function(input){
@@ -1045,7 +1117,7 @@ window.submitPayment = async function(){
     const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
 
     await addDoc(collection(db,"payments"),{
-      memberId:  currentUser.uid,
+      memberId:    currentUser.uid,
       memberDocId: memberData?.id || null,
       amount:    parseFloat(amount),
       slipUrl,
@@ -1066,7 +1138,7 @@ window.submitPayment = async function(){
 };
 
 // ═══════════════════════════════════════════════════════
-// TOOLTIP
+// UI/UX ELEMENTS (Tooltip / Modal / Toast / Utils)
 // ═══════════════════════════════════════════════════════
 const tooltip = document.getElementById('tooltip');
 window.showTooltip = function(e, el){
@@ -1080,21 +1152,20 @@ window.showTooltip = function(e, el){
 };
 window.hideTooltip = () => tooltip.classList.remove('show');
 document.addEventListener('mousemove', e => { if(tooltip.classList.contains('show')) posTooltip(e); });
+
 function posTooltip(e){
   const x=e.clientX+14, y=e.clientY-10;
   const tw=tooltip.offsetWidth||170, th=tooltip.offsetHeight||110;
   tooltip.style.left = (x+tw>window.innerWidth ? x-tw-28 : x)+'px';
   tooltip.style.top  = (y+th>window.innerHeight? y-th    : y)+'px';
 }
+
 window.clickRack = function(el){
   if(el.dataset.state==='vacant')
     if(confirm(`Rack ${el.dataset.id} ว่างอยู่\nติดต่อทีมงานเพื่อจองผ่าน LINE?`))
       window.open('https://line.me/R/ti/p/@365pwgzr','_blank');
 };
 
-// ═══════════════════════════════════════════════════════
-// MODAL / TOAST / UTILS
-// ═══════════════════════════════════════════════════════
 window.openModal  = id => document.getElementById(id).classList.add('open');
 window.closeModal = id => document.getElementById(id).classList.remove('open');
 document.querySelectorAll('.modal-bg').forEach(m =>
@@ -1125,6 +1196,7 @@ function hideLoader(){
   setTimeout(() => l.style.display='none', 600);
 }
 
+// ตัวอย่างระบบ visual effect แบบ Realtime บน Rack Map
 setInterval(() => {
   const racks = document.querySelectorAll('.rack.occupied');
   if(!racks.length) return;
