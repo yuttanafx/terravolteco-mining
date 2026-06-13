@@ -1,994 +1,792 @@
-```html
 <!DOCTYPE html>
-<html lang="th"> 
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terravolteco Quantum Facility</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
-
 :root{
-    --bg:#02050d;
-    --card:#0a1220cc;
-    --neon:#00ffae;
-    --cyan:#00d9ff;
-    --warning:#ffb84d;
-    --muted:#94a3b8;
+  --bg:#02050d; --card:#0a1220cc; --neon:#00ffae; --cyan:#00d9ff;
+  --warning:#ffb84d; --danger:#ff4f7a; --muted:#94a3b8;
+  --vacant-border:rgba(255,255,255,0.07);
 }
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;overflow-x:hidden;}
 body{
-    width:100%;
-    overflow-x:hidden;
+  background:
+    radial-gradient(circle at top left,#05261a 0%,transparent 30%),
+    radial-gradient(circle at top right,#061d30 0%,transparent 35%),
+    linear-gradient(180deg,#02050d 0%,#040816 100%);
+  color:white;font-family:'Prompt',sans-serif;min-height:100vh;
 }
-
-body{
-    background:
-        radial-gradient(circle at top left,#05261a 0%,transparent 30%),
-        radial-gradient(circle at top right,#061d30 0%,transparent 35%),
-        linear-gradient(180deg,#02050d 0%,#040816 100%);
-    color:white;
-    font-family:'Prompt',sans-serif;
-    min-height:100vh;
-}
-
-/* animated background */
-
 body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size:40px 40px;
-    animation:gridMove 14s linear infinite;
-    pointer-events:none;
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:40px 40px;animation:gridMove 14s linear infinite;pointer-events:none;
 }
-
-@keyframes gridMove{
-    from{
-        transform:translateY(0);
-    }
-    to{
-        transform:translateY(40px);
-    }
-}
-
-.container{
-    width:100%;
-    max-width:1600px;
-    margin:auto;
-    padding:20px;
-    position:relative;
-    z-index:2;
-}
-
-/* topbar */
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    margin-bottom:25px;
-}
-
-.logo-wrap{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.logo{
-    width:85px;
-    height:85px;
-    border-radius:24px;
-    background:linear-gradient(135deg,var(--neon),var(--cyan));
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:42px;
-    color:#00140e;
-    box-shadow:0 0 40px rgba(0,255,174,0.35);
-}
-
-.logo-text h1{
-    font-family:'Orbitron',sans-serif;
-    font-size:40px;
-}
-
-.logo-text span{
-    color:var(--neon);
-}
-
-.logo-text p{
-    color:var(--muted);
-    margin-top:5px;
-}
-
-.live{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:rgba(0,255,174,0.08);
-    border:1px solid rgba(0,255,174,0.2);
-    padding:12px 18px;
-    border-radius:999px;
-    backdrop-filter:blur(12px);
-}
-
-.dot{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background:var(--neon);
-    box-shadow:0 0 15px var(--neon);
-    animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-    50%{
-        opacity:0.3;
-    }
-}
-
-/* hero */
-
-.hero{
-    background:linear-gradient(145deg,#09111fcc,#060c18dd);
-    border:1px solid rgba(255,255,255,0.06);
-    border-radius:32px;
-    padding:35px;
-    overflow:hidden;
-    position:relative;
-}
-
-.hero::before{
-    content:'';
-    position:absolute;
-    width:450px;
-    height:450px;
-    border-radius:50%;
-    background:radial-gradient(circle,var(--cyan),transparent 70%);
-    opacity:0.12;
-    right:-200px;
-    top:-200px;
-}
-
-.hero-grid{
-    display:grid;
-    grid-template-columns:1.2fr 0.8fr;
-    gap:30px;
-    align-items:center;
-}
-
-.hero h2{
-    font-family:'Orbitron',sans-serif;
-    font-size:58px;
-    line-height:1.1;
-    margin-bottom:20px;
-}
-
-.hero h2 span{
-    color:var(--neon);
-}
-
-.hero p{
-    color:#dbe4f0;
-    line-height:1.8;
-}
-
-/* buttons */
-
-.actions{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    margin-top:25px;
-}
-
-.btn{
-    background:linear-gradient(135deg,var(--neon),var(--cyan));
-    border:none;
-    color:#00150f;
-    padding:14px 24px;
-    border-radius:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.3s;
-    text-decoration:none;
-}
-
-.btn:hover{
-    transform:translateY(-3px);
-}
-
-.btn-outline{
-    background:transparent;
-    color:white;
-    border:1px solid rgba(255,255,255,0.1);
-}
-
-/* quantum core */
-
-.core-wrap{
-    position:relative;
-    width:350px;
-    height:350px;
-    margin:auto;
-}
-
-.ring{
-    position:absolute;
-    inset:0;
-    border-radius:50%;
-    border:2px solid rgba(0,255,174,0.2);
-    animation:spin 15s linear infinite;
-}
-
-.ring:nth-child(2){
-    inset:40px;
-    border-color:rgba(0,217,255,0.25);
-    animation-direction:reverse;
-    animation-duration:10s;
-}
-
-.ring:nth-child(3){
-    inset:80px;
-    animation-duration:6s;
-}
-
-.ring::before{
-    content:'';
-    position:absolute;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:var(--neon);
-    top:-8px;
-    left:50%;
-    box-shadow:0 0 12px var(--neon);
-}
-
-@keyframes spin{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.core{
-    position:absolute;
-    inset:100px;
-    border-radius:50%;
-    background:radial-gradient(circle,var(--neon),#03140d 70%);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    box-shadow:0 0 50px rgba(0,255,174,0.3);
-}
-
-.core h3{
-    font-size:52px;
-    font-family:'Orbitron';
-}
-
-.core p{
-    color:#dbe4f0;
-}
-
-/* stats */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-top:30px;
-}
-
-.stat{
-    background:#0a1220cc;
-    border:1px solid rgba(255,255,255,0.05);
-    border-radius:24px;
-    padding:24px;
-}
-
-.stat h4{
-    color:var(--muted);
-    font-size:13px;
-    margin-bottom:12px;
-}
-
-.value{
-    font-size:38px;
-    color:var(--neon);
-    font-family:'Orbitron';
-}
-
-.sub{
-    margin-top:10px;
-    color:#6ee7b7;
-    font-size:13px;
-}
-
-/* dashboard */
-
-.dashboard{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-    margin-top:28px;
-}
-
-.card{
-    background:#0a1220cc;
-    border:1px solid rgba(255,255,255,0.05);
-    border-radius:28px;
-    padding:24px;
-}
-
-.card-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:24px;
-}
-
-.card-title h3{
-    font-family:'Orbitron';
-    color:var(--neon);
-}
-
-/* member */
-
-.member{
-    display:grid;
-    grid-template-columns:120px 1fr;
-    gap:20px;
-    align-items:center;
-}
-
-.avatar{
-    width:120px;
-    height:120px;
-    border-radius:24px;
-    background:linear-gradient(145deg,#111827,#1e293b);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:50px;
-    border:2px solid rgba(0,255,174,0.2);
-}
-
-.info p{
-    margin-bottom:12px;
-}
-
-.status{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 16px;
-    border-radius:999px;
-    margin-top:12px;
-    font-weight:600;
-}
-
-.paid{
-    background:rgba(0,255,174,0.08);
-    border:1px solid rgba(0,255,174,0.2);
-    color:var(--neon);
-}
-
-.pending{
-    background:rgba(255,184,77,0.08);
-    border:1px solid rgba(255,184,77,0.2);
-    color:var(--warning);
-}
-
-/* map */
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:10px;
-    margin-top:24px;
-}
-
-.rack{
-    height:80px;
-    border-radius:18px;
-    background:linear-gradient(180deg,#101827,#0b1220);
-    border:1px solid rgba(255,255,255,0.05);
-    position:relative;
-}
-
-.rack.active{
-    background:linear-gradient(180deg,#003322,#071813);
-    border:1px solid rgba(0,255,174,0.4);
-    box-shadow:0 0 20px rgba(0,255,174,0.25);
-}
-
-.rack::after{
-    content:'';
-    position:absolute;
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    top:10px;
-    right:10px;
-    background:#1f2937;
-}
-
-.rack.active::after{
-    background:var(--neon);
-    box-shadow:0 0 10px var(--neon);
-}
-
-.rack-label{
-    position:absolute;
-    left:10px;
-    bottom:8px;
-    font-size:12px;
-    color:#94a3b8;
-}
-
-/* chart */
-
-.chart{
-    height:240px;
-    display:flex;
-    align-items:flex-end;
-    gap:10px;
-}
-
-.bar{
-    flex:1;
-    border-radius:12px 12px 0 0;
-    background:linear-gradient(180deg,var(--cyan),var(--neon));
-    position:relative;
-}
-
-.bar span{
-    position:absolute;
-    top:-24px;
-    width:100%;
-    text-align:center;
-    font-size:11px;
-}
-
-/* bottom */
-
-.bottom{
-    margin-top:25px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-}
-
-.small{
-    height:180px;
-}
-
-.wave{
-    height:60px;
-    border-radius:18px;
-    margin-top:16px;
-    background:
-        linear-gradient(180deg,transparent,rgba(0,255,174,0.1)),
-        repeating-linear-gradient(
-            90deg,
-            rgba(0,255,174,0.15),
-            rgba(0,255,174,0.15) 2px,
-            transparent 2px,
-            transparent 12px
-        );
-    animation:wave 2s linear infinite;
-}
-
-@keyframes wave{
-    from{
-        background-position:0 0;
-    }
-    to{
-        background-position:120px 0;
-    }
-}
-
-.footer{
-    margin-top:30px;
-    text-align:center;
-    color:#64748b;
-    font-size:12px;
-}
-
-/* responsive */
-
+@keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(40px)}}
+.container{width:100%;max-width:1600px;margin:auto;padding:20px;position:relative;z-index:2;}
+
+/* TOPBAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:25px;}
+.logo-wrap{display:flex;align-items:center;gap:18px;}
+.logo{width:85px;height:85px;border-radius:24px;background:linear-gradient(135deg,var(--neon),var(--cyan));display:flex;justify-content:center;align-items:center;font-size:42px;color:#00140e;box-shadow:0 0 40px rgba(0,255,174,0.35);}
+.logo-text h1{font-family:'Orbitron',sans-serif;font-size:40px;}
+.logo-text span{color:var(--neon);}
+.logo-text p{color:var(--muted);margin-top:5px;}
+.live{display:flex;align-items:center;gap:10px;background:rgba(0,255,174,0.08);border:1px solid rgba(0,255,174,0.2);padding:12px 18px;border-radius:999px;backdrop-filter:blur(12px);}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--neon);box-shadow:0 0 15px var(--neon);animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:0.3}}
+
+/* HERO */
+.hero{background:linear-gradient(145deg,#09111fcc,#060c18dd);border:1px solid rgba(255,255,255,0.06);border-radius:32px;padding:35px;overflow:hidden;position:relative;}
+.hero::before{content:'';position:absolute;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,var(--cyan),transparent 70%);opacity:0.12;right:-200px;top:-200px;}
+.hero-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:30px;align-items:center;}
+.hero h2{font-family:'Orbitron',sans-serif;font-size:58px;line-height:1.1;margin-bottom:20px;}
+.hero h2 span{color:var(--neon);}
+.hero p{color:#dbe4f0;line-height:1.8;}
+.actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:25px;}
+.btn{background:linear-gradient(135deg,var(--neon),var(--cyan));border:none;color:#00150f;padding:14px 24px;border-radius:16px;font-weight:700;cursor:pointer;transition:0.3s;text-decoration:none;font-family:'Prompt',sans-serif;font-size:15px;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,255,174,0.25);}
+.btn-outline{background:transparent;color:white;border:1px solid rgba(255,255,255,0.1);}
+.btn-outline:hover{background:rgba(255,255,255,0.05);}
+.btn-danger{background:linear-gradient(135deg,#ff4f7a,#c02050);color:white;}
+
+/* CORE */
+.core-wrap{position:relative;width:350px;height:350px;margin:auto;}
+.ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,255,174,0.2);animation:spin 15s linear infinite;}
+.ring:nth-child(2){inset:40px;border-color:rgba(0,217,255,0.25);animation-direction:reverse;animation-duration:10s;}
+.ring:nth-child(3){inset:80px;animation-duration:6s;}
+.ring::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:var(--neon);top:-8px;left:50%;box-shadow:0 0 12px var(--neon);}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.core{position:absolute;inset:100px;border-radius:50%;background:radial-gradient(circle,var(--neon),#03140d 70%);display:flex;justify-content:center;align-items:center;flex-direction:column;box-shadow:0 0 50px rgba(0,255,174,0.3);}
+.core h3{font-size:52px;font-family:'Orbitron';}
+.core p{color:#dbe4f0;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:30px;}
+.stat{background:#0a1220cc;border:1px solid rgba(255,255,255,0.05);border-radius:24px;padding:24px;}
+.stat h4{color:var(--muted);font-size:13px;margin-bottom:12px;}
+.value{font-size:38px;color:var(--neon);font-family:'Orbitron';}
+.sub{margin-top:10px;color:#6ee7b7;font-size:13px;}
+
+/* PRICING */
+.pricing-section{margin-top:28px;}
+.pricing-title{font-family:'Orbitron';color:var(--neon);font-size:22px;margin-bottom:20px;text-align:center;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+.plan{background:#0a1220cc;border:1px solid rgba(255,255,255,0.07);border-radius:28px;padding:28px;position:relative;transition:0.3s;}
+.plan:hover{transform:translateY(-4px);border-color:rgba(0,255,174,0.2);}
+.plan.popular{border-color:rgba(0,255,174,0.4);box-shadow:0 0 30px rgba(0,255,174,0.12);}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--neon),var(--cyan));color:#00150f;font-weight:700;font-size:11px;padding:4px 14px;border-radius:999px;white-space:nowrap;}
+.plan-name{font-family:'Orbitron';font-size:16px;color:var(--neon);margin-bottom:8px;}
+.plan-price{font-size:36px;font-family:'Orbitron';margin-bottom:4px;}
+.plan-price span{font-size:16px;color:var(--muted);}
+.plan-desc{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.6;}
+.plan-features{list-style:none;margin-bottom:24px;}
+.plan-features li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;color:#cbd5e1;}
+.plan-features li::before{content:'✓ ';color:var(--neon);}
+
+/* DASHBOARD */
+.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;}
+.card{background:#0a1220cc;border:1px solid rgba(255,255,255,0.05);border-radius:28px;padding:24px;}
+.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.card-title h3{font-family:'Orbitron';color:var(--neon);}
+
+/* MEMBER */
+.member{display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center;}
+.avatar{width:120px;height:120px;border-radius:24px;background:linear-gradient(145deg,#111827,#1e293b);display:flex;justify-content:center;align-items:center;font-size:50px;border:2px solid rgba(0,255,174,0.2);}
+.info p{margin-bottom:10px;font-size:14px;}
+.status{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;margin-top:8px;font-weight:600;}
+.paid{background:rgba(0,255,174,0.08);border:1px solid rgba(0,255,174,0.2);color:var(--neon);}
+.pending{background:rgba(255,184,77,0.08);border:1px solid rgba(255,184,77,0.2);color:var(--warning);}
+
+/* PAYMENT HISTORY */
+.pay-history{margin-top:20px;}
+.pay-history h4{font-size:13px;color:var(--muted);margin-bottom:12px;letter-spacing:1px;}
+.pay-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,0.03);margin-bottom:8px;font-size:13px;}
+.pay-row .pay-date{color:var(--muted);}
+.pay-row .pay-amount{color:var(--neon);font-family:'Orbitron';font-size:13px;}
+.pay-row .pay-status-badge{font-size:11px;padding:3px 10px;border-radius:999px;}
+.pay-row .pay-status-badge.ok{background:rgba(0,255,174,0.1);color:var(--neon);border:1px solid rgba(0,255,174,0.2);}
+.pay-row .pay-status-badge.due{background:rgba(255,184,77,0.1);color:var(--warning);border:1px solid rgba(255,184,77,0.2);}
+
+/* RACK MAP */
+.rack-section{margin-top:24px;}
+.rack-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
+.legend-dot{width:12px;height:12px;border-radius:4px;}
+.legend-dot.mine{background:var(--neon);box-shadow:0 0 8px var(--neon);}
+.legend-dot.occupied{background:#3b4a6b;border:1px solid rgba(100,120,180,0.4);}
+.legend-dot.vacant{background:#101827;border:1px solid var(--vacant-border);}
+.section-label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;font-family:'Orbitron';opacity:0.6;}
+.rack-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px;}
+.rack{height:76px;border-radius:14px;background:linear-gradient(180deg,#101827,#0b1220);border:1px solid var(--vacant-border);position:relative;cursor:pointer;transition:all 0.2s ease;overflow:hidden;}
+.rack:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);}
+.rack::after{content:'';position:absolute;width:8px;height:8px;border-radius:50%;top:10px;right:10px;background:#1f2937;}
+.rack.mine{background:linear-gradient(180deg,#003322,#071813);border:1px solid rgba(0,255,174,0.5);box-shadow:0 0 20px rgba(0,255,174,0.2),inset 0 0 20px rgba(0,255,174,0.04);}
+.rack.mine::after{background:var(--neon);box-shadow:0 0 10px var(--neon);animation:pulse 1.4s infinite;}
+.rack.occupied{background:linear-gradient(180deg,#0e1830,#09102a);border:1px solid rgba(100,120,180,0.3);}
+.rack.occupied::after{background:#4a6fa5;box-shadow:0 0 6px rgba(74,111,165,0.6);}
+.rack-id{position:absolute;left:9px;bottom:7px;font-size:11px;color:#64748b;font-family:'Orbitron';letter-spacing:0.5px;font-weight:600;}
+.rack.mine .rack-id{color:rgba(0,255,174,0.7);}
+.rack.occupied .rack-id{color:rgba(100,140,200,0.6);}
+.rack.mine::before,.rack.occupied::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 14px 14px;}
+.rack.mine::before{background:linear-gradient(90deg,transparent,var(--neon),transparent);animation:shimmer 2s ease-in-out infinite;}
+.rack.occupied::before{background:linear-gradient(90deg,transparent,#4a6fa5,transparent);animation:shimmer 3s ease-in-out infinite;}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.rack-badge{position:absolute;top:10px;left:9px;font-size:9px;font-family:'Orbitron';color:rgba(0,255,174,0.6);letter-spacing:0.3px;}
+.rack.occupied .rack-badge{color:rgba(100,140,200,0.5);}
+
+/* CHART */
+.chart{height:240px;display:flex;align-items:flex-end;gap:10px;}
+.bar{flex:1;border-radius:12px 12px 0 0;background:linear-gradient(180deg,var(--cyan),var(--neon));position:relative;}
+.bar span{position:absolute;top:-24px;width:100%;text-align:center;font-size:11px;}
+
+/* BOTTOM */
+.bottom{margin-top:25px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.small{height:180px;}
+.wave{height:60px;border-radius:18px;margin-top:16px;background:linear-gradient(180deg,transparent,rgba(0,255,174,0.1)),repeating-linear-gradient(90deg,rgba(0,255,174,0.15),rgba(0,255,174,0.15) 2px,transparent 2px,transparent 12px);animation:wave 2s linear infinite;}
+@keyframes wave{from{background-position:0 0}to{background-position:120px 0}}
+
+/* STEPS */
+.steps{margin-top:28px;}
+.steps-title{font-family:'Orbitron';color:var(--neon);font-size:22px;margin-bottom:20px;text-align:center;}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+.step{background:#0a1220cc;border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:24px;text-align:center;}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--cyan));color:#00150f;font-family:'Orbitron';font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.step h4{font-size:15px;margin-bottom:8px;color:white;}
+.step p{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* TOOLTIP */
+.tooltip{position:fixed;background:#0f1e30;border:1px solid rgba(0,255,174,0.25);border-radius:14px;padding:14px 16px;font-size:13px;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:999;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+.tooltip.show{opacity:1;}
+.tooltip-title{font-family:'Orbitron';font-size:12px;color:var(--neon);margin-bottom:8px;}
+.tooltip-row{display:flex;justify-content:space-between;gap:16px;margin-bottom:4px;color:var(--muted);font-size:12px;}
+.tooltip-row span:last-child{color:white;}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:900;display:none;justify-content:center;align-items:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:linear-gradient(145deg,#0d1b2e,#091525);border:1px solid rgba(0,255,174,0.2);border-radius:28px;padding:32px;width:100%;max-width:460px;position:relative;}
+.modal h3{font-family:'Orbitron';color:var(--neon);font-size:18px;margin-bottom:6px;}
+.modal .modal-sub{color:var(--muted);font-size:13px;margin-bottom:24px;}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,0.12);}
+.bank-box{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:20px;margin-bottom:20px;}
+.bank-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.bank-row:last-child{margin-bottom:0;}
+.bank-label{color:var(--muted);font-size:13px;}
+.bank-value{font-weight:600;font-size:14px;}
+.copy-btn{background:rgba(0,255,174,0.1);border:1px solid rgba(0,255,174,0.2);color:var(--neon);padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;transition:0.2s;}
+.copy-btn:hover{background:rgba(0,255,174,0.2);}
+.qr-placeholder{width:140px;height:140px;border-radius:16px;background:white;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:#000;font-size:11px;text-align:center;padding:10px;}
+.amount-input-wrap{margin-bottom:16px;}
+.amount-input-wrap label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;}
+.amount-input-wrap input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;color:white;font-size:16px;font-family:'Orbitron';outline:none;}
+.amount-input-wrap input:focus{border-color:rgba(0,255,174,0.4);}
+.slip-upload{border:2px dashed rgba(255,255,255,0.1);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:0.2s;margin-bottom:16px;}
+.slip-upload:hover{border-color:rgba(0,255,174,0.3);background:rgba(0,255,174,0.03);}
+.slip-upload p{color:var(--muted);font-size:13px;margin-top:8px;}
+.slip-upload .icon{font-size:28px;}
+#slip-preview{max-width:100%;border-radius:12px;margin-top:12px;display:none;}
+
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:#02050d;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.5s;}
+.loading-overlay.fade{opacity:0;pointer-events:none;}
+.loading-spinner{width:48px;height:48px;border:3px solid rgba(0,255,174,0.1);border-top:3px solid var(--neon);border-radius:50%;animation:spin 0.8s linear infinite;}
+.loading-text{font-family:'Orbitron';font-size:13px;color:var(--neon);letter-spacing:2px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f1e30;border:1px solid rgba(0,255,174,0.3);color:var(--neon);padding:14px 24px;border-radius:999px;font-size:14px;z-index:9998;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* FIREBASE CONFIG NOTICE */
+.fb-notice{background:rgba(255,184,77,0.08);border:1px solid rgba(255,184,77,0.25);border-radius:16px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--warning);line-height:1.7;}
+.fb-notice strong{display:block;font-family:'Orbitron';margin-bottom:6px;font-size:12px;}
+.fb-notice code{background:rgba(0,0,0,0.4);padding:2px 8px;border-radius:6px;font-size:12px;color:#fcd34d;}
+
+.footer{margin-top:30px;text-align:center;color:#64748b;font-size:12px;}
+
+/* RESPONSIVE */
 @media(max-width:1000px){
-
-    .hero-grid{
-        grid-template-columns:1fr;
-    }
-
-    .dashboard{
-        grid-template-columns:1fr;
-    }
-
-    .bottom{
-        grid-template-columns:1fr;
-    }
-
+  .hero-grid{grid-template-columns:1fr;}
+  .dashboard{grid-template-columns:1fr;}
+  .bottom{grid-template-columns:1fr;}
 }
-
 @media(max-width:700px){
-
-    .container{
-        padding:12px;
-    }
-
-    .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .logo{
-        width:65px;
-        height:65px;
-        font-size:30px;
-    }
-
-    .logo-text h1{
-        font-size:24px;
-    }
-
-    .hero{
-        padding:22px;
-    }
-
-    .hero h2{
-        font-size:34px;
-    }
-
-    .hero-grid{
-        gap:20px;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .member{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
-
-    .avatar{
-        margin:auto;
-    }
-
-    .grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .rack{
-        height:65px;
-    }
-
-    .chart{
-        height:180px;
-    }
-
-    .actions{
-        flex-direction:column;
-    }
-
-    .btn{
-        width:100%;
-        text-align:center;
-    }
-
-    .core-wrap{
-        width:240px;
-        height:240px;
-    }
-
-    .ring:nth-child(2){
-        inset:30px;
-    }
-
-    .ring:nth-child(3){
-        inset:60px;
-    }
-
-    .core{
-        inset:60px;
-    }
-
-    .core h3{
-        font-size:34px;
-    }
-
+  .container{padding:12px;}
+  .topbar{flex-direction:column;align-items:flex-start;}
+  .logo{width:65px;height:65px;font-size:30px;}
+  .logo-text h1{font-size:24px;}
+  .hero{padding:22px;}
+  .hero h2{font-size:34px;}
+  .stats{grid-template-columns:1fr;}
+  .member{grid-template-columns:1fr;text-align:center;}
+  .avatar{margin:auto;}
+  .rack-row{grid-template-columns:repeat(3,1fr);}
+  .rack{height:65px;}
+  .chart{height:180px;}
+  .actions{flex-direction:column;}
+  .btn{width:100%;text-align:center;}
+  .core-wrap{width:240px;height:240px;}
+  .ring:nth-child(2){inset:30px;}
+  .ring:nth-child(3){inset:60px;}
+  .core{inset:60px;}
+  .core h3{font-size:34px;}
+  .steps-grid{grid-template-columns:1fr 1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
 }
-
 </style>
 </head>
-
 <body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loader">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">CONNECTING TO FIREBASE…</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="tt-title"></div>
+  <div class="tooltip-row"><span>สถานะ</span><span id="tt-status"></span></div>
+  <div class="tooltip-row"><span>Hashrate</span><span id="tt-hash"></span></div>
+  <div class="tooltip-row"><span>Temp</span><span id="tt-temp"></span></div>
+  <div class="tooltip-row"><span>Uptime</span><span id="tt-uptime"></span></div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-bg" id="payModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('payModal')">✕</button>
+    <h3>ชำระค่าบริการรายเดือน</h3>
+    <p class="modal-sub">โอนเงินผ่านบัญชีบริษัทแล้วแนบสลิป</p>
+
+    <div class="qr-placeholder">
+      <div>QR PromptPay<br><strong>สแกนจ่าย</strong><br><small>(ใส่รูป QR จริงใน Firebase)</small></div>
+    </div>
+
+    <div class="bank-box">
+      <div class="bank-row">
+        <span class="bank-label">ธนาคาร</span>
+        <span class="bank-value">กสิกรไทย (KBank)</span>
+      </div>
+      <div class="bank-row">
+        <span class="bank-label">ชื่อบัญชี</span>
+        <span class="bank-value">บริษัท เทอร์ราโวลท์อีโค่ จำกัด</span>
+      </div>
+      <div class="bank-row">
+        <span class="bank-label">เลขบัญชี</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="bank-value" id="acct-no">220-3-446-139</span>
+          <button class="copy-btn" onclick="copyAcct()">คัดลอก</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="amount-input-wrap">
+      <label>จำนวนเงิน (บาท)</label>
+      <input type="number" id="pay-amount" placeholder="3500">
+    </div>
+
+    <div class="slip-upload" onclick="document.getElementById('slip-file').click()">
+      <div class="icon">📎</div>
+      <p>แตะเพื่อแนบสลิปโอนเงิน</p>
+      <input type="file" id="slip-file" accept="image/*" style="display:none" onchange="previewSlip(this)">
+      <img id="slip-preview">
+    </div>
+
+    <button class="btn" style="width:100%" onclick="submitPayment()">ยืนยันการชำระเงิน</button>
+  </div>
+</div>
 
 <div class="container">
 
-<div class="topbar">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo-wrap">
+      <div class="logo">⚡</div>
+      <div class="logo-text">
+        <h1>Terra<span>volteco</span></h1>
+        <p>Quantum Renewable Mining Infrastructure</p>
+      </div>
+    </div>
+    <div class="live"><div class="dot"></div>SYSTEM ONLINE</div>
+  </div>
 
-<div class="logo-wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <h2>FUTURE OF<br><span>QUANTUM MINING</span></h2>
+        <p>ระบบบริหารศูนย์ขุดระดับโลก รองรับ AI Monitoring, Smart Cooling, Renewable Energy และ Secure Mining Infrastructure — นำเครื่องของคุณมาฝากวาง เราดูแลทุกอย่าง</p>
+        <div class="actions">
+          <a href="https://line.me/R/ti/p/@365pwgzr" class="btn">สมัครใช้บริการผ่าน LINE</a>
+          <a href="#how-it-works" class="btn btn-outline">วิธีการสมัคร</a>
+        </div>
+      </div>
+      <div>
+        <div class="core-wrap">
+          <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+          <div class="core"><h3>99%</h3><p>Efficiency</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><h4>Total Hashrate</h4><div class="value" id="stat-hashrate">—</div><div class="sub">Realtime Global Mining</div></div>
+      <div class="stat"><h4>Renewable Energy</h4><div class="value">100%</div><div class="sub">Flywheel Active</div></div>
+      <div class="stat"><h4>Connected Miners</h4><div class="value" id="stat-miners">—</div><div class="sub">Realtime Monitoring</div></div>
+      <div class="stat"><h4>Cooling Stability</h4><div class="value" id="stat-temp">—</div><div class="sub">AI Controlled</div></div>
+    </div>
+  </section>
 
-<div class="logo">
-⚡
+  <!-- HOW IT WORKS -->
+  <section class="steps" id="how-it-works">
+    <div class="steps-title">วิธีการใช้บริการ</div>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">1</div><h4>ติดต่อผ่าน LINE</h4><p>แอดไลน์เพื่อสอบถามและจอง rack ตำแหน่งที่ต้องการ</p></div>
+      <div class="step"><div class="step-num">2</div><h4>นำเครื่องมาติดตั้ง</h4><p>นำ miner มาวางที่ศูนย์ ทีมงานช่วยติดตั้งและตั้งค่าให้</p></div>
+      <div class="step"><div class="step-num">3</div><h4>ชำระค่าบริการ</h4><p>ชำระค่าไฟ + บริการรายเดือนผ่านระบบโอนเงิน</p></div>
+      <div class="step"><div class="step-num">4</div><h4>Monitor ออนไลน์</h4><p>ดู hashrate, temp, uptime แบบ realtime ผ่านหน้านี้</p></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section">
+    <div class="pricing-title">แพ็กเกจค่าบริการ</div>
+    <div class="pricing-grid" id="pricing-grid">
+      <!-- inject from Firebase -->
+      <div style="text-align:center;color:var(--muted);padding:40px;grid-column:1/-1;">กำลังโหลดแพ็กเกจ…</div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard">
+    <div class="card">
+      <div class="card-title">
+        <h3>Member Portal</h3>
+        <span id="portal-status" style="font-size:12px;color:var(--muted);">Secure Node Access</span>
+      </div>
+      <div id="display"></div>
+      <div class="rack-section" id="rack-section"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <h3>Energy Analytics</h3>
+        <span style="font-size:12px;color:var(--muted);">Realtime Data</span>
+      </div>
+      <div class="chart" id="energy-chart">
+        <div class="bar" style="height:50%"><span>Mon</span></div>
+        <div class="bar" style="height:70%"><span>Tue</span></div>
+        <div class="bar" style="height:55%"><span>Wed</span></div>
+        <div class="bar" style="height:88%"><span>Thu</span></div>
+        <div class="bar" style="height:95%"><span>Fri</span></div>
+        <div class="bar" style="height:72%"><span>Sat</span></div>
+        <div class="bar" style="height:82%"><span>Sun</span></div>
+      </div>
+      <div class="actions" style="margin-top:24px;">
+        <button class="btn" onclick="openModal('payModal')">ชำระค่าบริการ</button>
+        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM -->
+  <section class="bottom">
+    <div class="card small"><h3>AI NETWORK</h3><div class="wave"></div><div style="margin-top:20px;color:var(--neon);font-size:32px;font-family:'Orbitron';">14.8 TB/s</div></div>
+    <div class="card small"><h3>GLOBAL NODE</h3><div class="wave"></div><div style="margin-top:20px;color:var(--cyan);font-size:32px;font-family:'Orbitron';">128 Nodes</div></div>
+    <div class="card small"><h3>QUANTUM SECURITY</h3><div class="wave"></div><div style="margin-top:20px;color:#8b5cf6;font-size:32px;font-family:'Orbitron';">SECURE</div></div>
+  </section>
+
+  <div class="footer">© 2026 Terravolteco Quantum Facility · Powered by Firebase</div>
 </div>
 
-<div class="logo-text">
-<h1>Terra<span>volteco</span></h1>
-<p>Quantum Renewable Mining Infrastructure</p>
-</div>
-
-</div>
-
-<div class="live">
-<div class="dot"></div>
-SYSTEM ONLINE
-</div>
-
-</div>
-
-<section class="hero">
-
-<div class="hero-grid">
-
-<div>
-
-<h2>
-FUTURE OF<br>
-<span>QUANTUM MINING</span>
-</h2>
-
-<p>
-ระบบบริหารศูนย์ขุดระดับโลก รองรับ AI Monitoring,
-Smart Cooling,
-Renewable Energy
-และ Secure Mining Infrastructure
-</p>
-
-<div class="actions">
-
-<a href="https://line.me/R/ti/p/@365pwgzr" class="btn">
-สมัครใช้บริการผ่าน LINE
-</a>
-
-<button class="btn btn-outline">
-ดู Facility
-</button>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="core-wrap">
-
-<div class="ring"></div>
-<div class="ring"></div>
-<div class="ring"></div>
-
-<div class="core">
-<h3>99%</h3>
-<p>Efficiency</p>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-<h4>Total Hashrate</h4>
-<div class="value">8.4 EH/s</div>
-<div class="sub">Realtime Global Mining</div>
-</div>
-
-<div class="stat">
-<h4>Renewable Energy</h4>
-<div class="value">100%</div>
-<div class="sub">Flywheel Active</div>
-</div>
-
-<div class="stat">
-<h4>Connected Miners</h4>
-<div class="value">3,264</div>
-<div class="sub">Realtime Monitoring</div>
-</div>
-
-<div class="stat">
-<h4>Cooling Stability</h4>
-<div class="value">21°C</div>
-<div class="sub">AI Controlled</div>
-</div>
-
-</div>
-
-</section>
-
-<section class="dashboard">
-
-<div class="card">
-
-<div class="card-title">
-<h3>Member Portal</h3>
-<span>Secure Node Access</span>
-</div>
-
-<div id="display"></div>
-
-<div class="grid" id="map"></div>
-
-</div>
-
-<div class="card">
-
-<div class="card-title">
-<h3>Energy Analytics</h3>
-<span>Realtime Data</span>
-</div>
-
-<div class="chart">
-
-<div class="bar" style="height:50%"><span>Mon</span></div>
-<div class="bar" style="height:70%"><span>Tue</span></div>
-<div class="bar" style="height:55%"><span>Wed</span></div>
-<div class="bar" style="height:88%"><span>Thu</span></div>
-<div class="bar" style="height:95%"><span>Fri</span></div>
-<div class="bar" style="height:72%"><span>Sat</span></div>
-<div class="bar" style="height:82%"><span>Sun</span></div>
-
-</div>
-
-<div class="actions">
-
-<button class="btn" onclick="showPayment()">
-ชำระเงินผ่านบัญชีบริษัท
-</button>
-
-<button class="btn btn-outline">
-Export Analytics
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="bottom">
-
-<div class="card small">
-
-<h3>AI NETWORK</h3>
-
-<div class="wave"></div>
-
-<div style="margin-top:20px;color:var(--neon);font-size:32px;font-family:'Orbitron';">
-14.8 TB/s
-</div>
-
-</div>
-
-<div class="card small">
-
-<h3>GLOBAL NODE</h3>
-
-<div class="wave"></div>
-
-<div style="margin-top:20px;color:var(--cyan);font-size:32px;font-family:'Orbitron';">
-128 Nodes
-</div>
-
-</div>
-
-<div class="card small">
-
-<h3>QUANTUM SECURITY</h3>
-
-<div class="wave"></div>
-
-<div style="margin-top:20px;color:#8b5cf6;font-size:32px;font-family:'Orbitron';">
-SECURE
-</div>
-
-</div>
-
-</section>
-
-<div class="footer">
-© 2026 Terravolteco Quantum Facility
-</div>
-
-</div>
-
-<script>
-
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
-
-const userData = {
-
-"A12":{
-name:"คุณสมชาย",
-rack:"Section B - Rack A12",
-status:"ชำระแล้ว",
-position:12,
-hashrate:"142 TH/s",
-temperature:"58°C",
-uptime:"99.8%"
-},
-
-"B05":{
-name:"คุณสมหญิง",
-rack:"Section A - Rack B05",
-status:"ค้างชำระ",
-position:5,
-hashrate:"126 TH/s",
-temperature:"64°C",
-uptime:"94.1%"
-}
-
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// ══════════════════════════════════════════════════════
+//  🔧 ใส่ Firebase Config ของคุณที่นี่
+//  ไปที่ Firebase Console → Project Settings → Your apps
+// ══════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyD2sAI9Rd6bchY7bK2gtJQitZTQiITx_wY",
+  authDomain:        "cryptocurrency-mining-rig.firebaseapp.com",
+  projectId:         "cryptocurrency-mining-rig",
+  messagingSenderId: "86905840755",
+  appId:             "1:86905840755:web:56281f6aa1768fce457606"
 };
 
-const display = document.getElementById('display');
-const map = document.getElementById('map');
+// ══════════════════════════════════════════════════════
+//  🖼️  Cloudinary config (ฟรี 25GB — สมัครที่ cloudinary.com)
+//  Dashboard → Settings → Upload → Add upload preset
+//  ตั้ง preset เป็น "Unsigned" แล้วใส่ชื่อด้านล่าง
+// ══════════════════════════════════════════════════════
+const CLOUDINARY_CLOUD = "dm3nft7va";
+const CLOUDINARY_PRESET= "slips_unsigned";
 
-if(userId && userData[userId]){
+// ══════════════════════════════════════════════════════
+//  Firestore Structure (สร้างใน Console):
+//
+//  /settings/stats          → hashrate, miners, temp
+//  /settings/packages       → array of plan objects
+//  /racks/{rackId}          → section, col, row, state,
+//                             ownerId, hashrate, temp, uptime
+//  /members/{memberId}      → name, rackId, status,
+//                             payments: [{date,amount,status}]
+//  /payments (collection)   → memberId, amount, slipUrl,
+//                             status, createdAt
+// ══════════════════════════════════════════════════════
 
-const user = userData[userId];
+const IS_DEMO = firebaseConfig.apiKey === "YOUR_API_KEY";
 
-display.innerHTML = `
-
-<div class="member">
-
-<div class="avatar">
-👨‍💻
-</div>
-
-<div class="info">
-
-<p>สมาชิก: <strong>${user.name}</strong></p>
-<p>ตำแหน่ง: <strong>${user.rack}</strong></p>
-<p>Hashrate: <strong>${user.hashrate}</strong></p>
-<p>Temperature: <strong>${user.temperature}</strong></p>
-<p>Uptime: <strong>${user.uptime}</strong></p>
-
-<div class="status ${user.status === 'ชำระแล้ว' ? 'paid' : 'pending'}">
-
-${user.status === 'ชำระแล้ว'
-? '🟢 ACTIVE'
-: '🟠 PAYMENT PENDING'
+let app, db;
+if(!IS_DEMO){
+  app = initializeApp(firebaseConfig);
+  db  = getFirestore(app);
 }
 
-</div>
+// ── URL PARAM ─────────────────────────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const userId    = urlParams.get('id');
 
-</div>
+// ── DEMO FALLBACK DATA ────────────────────────────────
+const DEMO_STATS    = { hashrate:"8.4 EH/s", miners:"3,264", temp:"21°C" };
+const DEMO_PACKAGES = [
+  { name:"STARTER",   price:"2,900", unit:"/เดือน", desc:"สำหรับเครื่อง 1-2 ตัว กำลังไฟไม่เกิน 3kW", features:["ไฟฟ้า + ระบายความร้อน","Monitoring Dashboard","Line Support"], popular:false },
+  { name:"PRO",       price:"5,500", unit:"/เดือน", desc:"เครื่อง 3-5 ตัว กำลังไฟไม่เกิน 8kW",         features:["ทุกอย่างใน Starter","Priority Support","ประกันไฟดับ UPS","รายงานรายสัปดาห์"], popular:true  },
+  { name:"ENTERPRISE",price:"ติดต่อ",unit:"",        desc:"10+ เครื่อง หรือ ASIC ขนาดใหญ่ ราคาพิเศษ", features:["Dedicated Rack","SLA 99.9% Uptime","ทีมดูแลเฉพาะ","Custom Monitoring"], popular:false },
+];
+const DEMO_MEMBERS = {
+  "A12":{ name:"คุณสมชาย", rackId:"A12", section:"A", col:2, row:1, status:"ชำระแล้ว", hashrate:"142 TH/s", temperature:"58°C", uptime:"99.8%",
+    payments:[{date:"01/06/2026",amount:"5,500",status:"ok"},{date:"01/05/2026",amount:"5,500",status:"ok"},{date:"01/04/2026",amount:"5,500",status:"ok"}]},
+  "B05":{ name:"คุณสมหญิง", rackId:"B05", section:"B", col:4, row:0, status:"ค้างชำระ", hashrate:"126 TH/s", temperature:"64°C", uptime:"94.1%",
+    payments:[{date:"01/06/2026",amount:"5,500",status:"due"},{date:"01/05/2026",amount:"5,500",status:"ok"}]},
+};
+const DEMO_OCCUPIED = { A:[[0,0],[1,0],[0,1],[3,1],[5,0],[2,2],[4,2]], B:[[0,0],[1,1],[2,0],[5,1],[3,2],[0,2]] };
 
-</div>
-
-`;
-
-for(let i=0;i<36;i++){
-
-const rack = document.createElement('div');
-
-rack.className = 'rack ' + (i === user.position ? 'active' : '');
-
-rack.innerHTML = `
-<div class="rack-label">
-Rack ${i+1}
-</div>
-`;
-
-map.appendChild(rack);
-
+// ── INIT ──────────────────────────────────────────────
+async function init(){
+  if(IS_DEMO){
+    console.warn("Demo mode: ใส่ Firebase config จริงเพื่อใช้งานจริง");
+    renderStats(DEMO_STATS);
+    renderPackages(DEMO_PACKAGES);
+    renderMember(userId ? DEMO_MEMBERS[userId] : null, DEMO_OCCUPIED);
+    buildRackMap(DEMO_OCCUPIED, userId ? DEMO_MEMBERS[userId] : null);
+  } else {
+    await loadStats();
+    await loadPackages();
+    await loadMemberAndRacks();
+  }
+  hideLoader();
 }
 
-}else{
-
-display.innerHTML = `
-
-<div style="
-padding:25px;
-border-radius:20px;
-background:rgba(255,79,122,0.08);
-border:1px solid rgba(255,79,122,0.2);
-color:#ff9ab0;
-">
-
-<h3 style="margin-bottom:10px;">
-ACCESS DENIED
-</h3>
-
-<p>
-กรุณาเข้าสู่ระบบผ่านลิงก์สมาชิก
-</p>
-
-<div style="
-margin-top:15px;
-background:#000;
-color:var(--neon);
-padding:12px;
-border-radius:12px;
-display:inline-block;
-font-family:monospace;
-">
-?id=A12
-</div>
-
-</div>
-
-`;
-
+// ── STATS ─────────────────────────────────────────────
+async function loadStats(){
+  try{
+    const snap = await getDoc(doc(db,"settings","stats"));
+    renderStats(snap.exists() ? snap.data() : DEMO_STATS);
+    // realtime
+    onSnapshot(doc(db,"settings","stats"), s => s.exists() && renderStats(s.data()));
+  }catch{ renderStats(DEMO_STATS); }
+}
+function renderStats(d){
+  document.getElementById('stat-hashrate').textContent = d.hashrate || "—";
+  document.getElementById('stat-miners').textContent   = d.miners   || "—";
+  document.getElementById('stat-temp').textContent     = d.temp     || "—";
 }
 
-function showPayment(){
-
-alert(`
-ชำระเงินค่าบริการรายเดือน
-
-ธนาคาร:
-กสิกรไทย
-
-ชื่อบัญชี:
-บริษัท เทอร์ราโวลท์อีโค่ จำกัด
-
-เลขบัญชี:
-220-3-446-139
-`);
-
+// ── PACKAGES ──────────────────────────────────────────
+async function loadPackages(){
+  try{
+    const snap = await getDoc(doc(db,"settings","packages"));
+    renderPackages(snap.exists() && snap.data().list ? snap.data().list : DEMO_PACKAGES);
+  }catch{ renderPackages(DEMO_PACKAGES); }
+}
+function renderPackages(plans){
+  const g = document.getElementById('pricing-grid');
+  g.innerHTML = plans.map(p => `
+    <div class="plan ${p.popular?'popular':''}">
+      ${p.popular ? '<div class="popular-badge">⭐ แนะนำ</div>' : ''}
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-price">${p.price}<span>${p.unit}</span></div>
+      <div class="plan-desc">${p.desc}</div>
+      <ul class="plan-features">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <a href="https://line.me/R/ti/p/@365pwgzr" class="btn" style="width:100%;display:block;text-align:center;">
+        ${p.price==='ติดต่อ' ? 'ติดต่อเรา' : 'สมัครแพ็กเกจนี้'}
+      </a>
+    </div>
+  `).join('');
 }
 
+// ── MEMBER + RACKS ────────────────────────────────────
+async function loadMemberAndRacks(){
+  let member = null;
+  if(userId){
+    try{
+      const snap = await getDoc(doc(db,"members",userId));
+      member = snap.exists() ? snap.data() : null;
+    }catch{}
+  }
+
+  // load all racks
+  let rackMap = { A:[], B:[] };
+  try{
+    const snap = await getDocs(collection(db,"racks"));
+    snap.forEach(d => {
+      const r = d.data();
+      const sec = r.section;
+      if(rackMap[sec]) rackMap[sec].push({ id:d.id, ...r });
+    });
+  }catch{
+    rackMap = buildDemoRacks(DEMO_OCCUPIED);
+  }
+
+  renderMember(member, null);
+  buildRackMapFromFirebase(rackMap, member);
+
+  // realtime rack updates
+  if(!IS_DEMO){
+    onSnapshot(collection(db,"racks"), snap => {
+      const rm = {A:[],B:[]};
+      snap.forEach(d => { const r=d.data(); if(rm[r.section]) rm[r.section].push({id:d.id,...r}); });
+      buildRackMapFromFirebase(rm, member);
+    });
+  }
+}
+
+function buildDemoRacks(occupied){
+  const rm = {A:[],B:[]};
+  ['A','B'].forEach(sec => {
+    for(let row=0;row<3;row++) for(let col=0;col<6;col++){
+      const id = `${sec}${String(row*6+col+1).padStart(2,'0')}`;
+      const isOcc = (occupied[sec]||[]).some(([c,r])=>c===col&&r===row);
+      rm[sec].push({ id, section:sec, col, row, state: isOcc?'occupied':'vacant',
+        hashrate:isOcc?'—':'—', temperature:'—', uptime:'—' });
+    }
+  });
+  return rm;
+}
+
+// ── RENDER MEMBER INFO ────────────────────────────────
+function renderMember(member, occupiedFallback){
+  const display = document.getElementById('display');
+  if(member){
+    const paid = member.status === 'ชำระแล้ว';
+    const histHTML = (member.payments||[]).map(p=>`
+      <div class="pay-row">
+        <span class="pay-date">${p.date}</span>
+        <span class="pay-amount">฿${p.amount}</span>
+        <span class="pay-status-badge ${p.status==='ok'?'ok':'due'}">${p.status==='ok'?'ชำระแล้ว':'ค้างชำระ'}</span>
+      </div>`).join('');
+    display.innerHTML = `
+      <div class="member">
+        <div class="avatar">👨‍💻</div>
+        <div class="info">
+          <p>สมาชิก: <strong>${member.name}</strong></p>
+          <p>ตำแหน่ง: <strong>Rack ${member.rackId}</strong></p>
+          <p>Hashrate: <strong>${member.hashrate||'—'}</strong></p>
+          <p>Temperature: <strong>${member.temperature||'—'}</strong></p>
+          <p>Uptime: <strong>${member.uptime||'—'}</strong></p>
+          <div class="status ${paid?'paid':'pending'}">${paid?'🟢 ACTIVE':'🟠 PAYMENT PENDING'}</div>
+        </div>
+      </div>
+      ${histHTML ? `<div class="pay-history"><h4>PAYMENT HISTORY</h4>${histHTML}</div>` : ''}`;
+  } else {
+    display.innerHTML = `
+      <div style="padding:25px;border-radius:20px;background:rgba(255,79,122,0.08);border:1px solid rgba(255,79,122,0.2);color:#ff9ab0;">
+        <h3 style="margin-bottom:10px;">ACCESS DENIED</h3>
+        <p>กรุณาเข้าสู่ระบบผ่านลิงก์สมาชิก</p>
+        <div style="margin-top:15px;background:#000;color:var(--neon);padding:12px;border-radius:12px;display:inline-block;font-family:monospace;">?id=A12</div>
+      </div>`;
+  }
+}
+
+// ── RACK MAP (Firebase version) ───────────────────────
+function buildRackMapFromFirebase(rackMap, member){
+  buildRackMap({ A: rackMap.A, B: rackMap.B }, member, true);
+}
+
+function buildRackMap(data, member, isFirebase=false){
+  const rackSection = document.getElementById('rack-section');
+  const sections = ['A','B'];
+
+  // For demo mode: convert occupied arrays to rack objects
+  let racksBySection = {};
+  if(!isFirebase){
+    racksBySection = buildDemoRacks(data);
+  } else {
+    racksBySection = data;
+  }
+
+  let html = `<div class="rack-legend">
+    <div class="legend-item"><div class="legend-dot mine"></div>ตำแหน่งของคุณ</div>
+    <div class="legend-item"><div class="legend-dot occupied"></div>มีเครื่องอยู่</div>
+    <div class="legend-item"><div class="legend-dot vacant"></div>ว่าง</div>
+  </div>`;
+
+  sections.forEach(sec => {
+    const racks = (racksBySection[sec] || []).sort((a,b) => a.row!==b.row ? a.row-b.row : a.col-b.col);
+    html += `<div class="section-label">SECTION ${sec}</div><div class="rack-row">`;
+    racks.forEach(rack => {
+      let state = rack.state || 'vacant';
+      if(member && member.rackId === rack.id) state = 'mine';
+      const hash   = state==='mine' ? (member.hashrate||'—') : (rack.hashrate||'—');
+      const temp   = state==='mine' ? (member.temperature||'—') : (rack.temperature||'—');
+      const uptime = state==='mine' ? (member.uptime||'—') : (rack.uptime||'—');
+      const badge  = state!=='vacant' ? `<div class="rack-badge">${hash}</div>` : '';
+      html += `<div class="rack ${state}"
+        data-id="${rack.id}" data-state="${state}"
+        data-hash="${hash}" data-temp="${temp}" data-uptime="${uptime}"
+        onmouseenter="showTooltip(event,this)" onmouseleave="hideTooltip()"
+        onclick="clickRack(this)">
+        ${badge}<div class="rack-id">${rack.id}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  rackSection.innerHTML = html;
+}
+
+// ── PAYMENT SUBMIT ────────────────────────────────────
+window._slipFile = null;
+window.previewSlip = function(input){
+  const file = input.files[0];
+  window._slipFile = file;
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('slip-preview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+};
+
+window.submitPayment = async function(){
+  const amount = document.getElementById('pay-amount').value;
+  if(!amount){ showToast('กรุณากรอกจำนวนเงิน'); return; }
+
+  const btn = document.querySelector('#payModal .btn:last-child');
+  btn.textContent = 'กำลังส่ง…'; btn.disabled = true;
+
+  try{
+    let slipUrl = null;
+    if(window._slipFile && CLOUDINARY_CLOUD !== "YOUR_CLOUD_NAME"){
+      const fd = new FormData();
+      fd.append('file',        window._slipFile);
+      fd.append('upload_preset', CLOUDINARY_PRESET);
+      fd.append('folder',      'terravolteco/slips');
+      const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method:'POST', body:fd });
+      const json = await res.json();
+      if(!res.ok) throw new Error(json.error?.message || 'Cloudinary upload failed');
+      slipUrl = json.secure_url;
+    }
+
+    if(!IS_DEMO){
+      await addDoc(collection(db,"payments"), {
+        memberId: userId || 'guest',
+        amount:   parseFloat(amount),
+        slipUrl:  slipUrl || null,
+        status:   'pending',
+        createdAt: serverTimestamp()
+      });
+    }
+
+    closeModal('payModal');
+    showToast('✅ ส่งข้อมูลการชำระเงินแล้ว ทีมงานจะตรวจสอบภายใน 24 ชม.');
+    document.getElementById('pay-amount').value = '';
+    document.getElementById('slip-preview').style.display='none';
+    window._slipFile = null;
+  }catch(e){
+    showToast('❌ เกิดข้อผิดพลาด: ' + e.message);
+  }
+  btn.textContent = 'ยืนยันการชำระเงิน'; btn.disabled = false;
+};
+
+// ── TOOLTIP ───────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+window.showTooltip = function(e, el){
+  const labels = { mine:'🟢 ของคุณ', occupied:'🔵 มีเครื่องอยู่', vacant:'⚪ ว่าง' };
+  document.getElementById('tt-title').textContent   = 'Rack ' + el.dataset.id;
+  document.getElementById('tt-status').textContent  = labels[el.dataset.state] || '—';
+  document.getElementById('tt-hash').textContent    = el.dataset.hash;
+  document.getElementById('tt-temp').textContent    = el.dataset.temp;
+  document.getElementById('tt-uptime').textContent  = el.dataset.uptime;
+  tooltip.classList.add('show'); posTooltip(e);
+};
+window.hideTooltip = () => tooltip.classList.remove('show');
+document.addEventListener('mousemove', e => { if(tooltip.classList.contains('show')) posTooltip(e); });
+function posTooltip(e){
+  const x=e.clientX+14, y=e.clientY-10;
+  const tw=tooltip.offsetWidth||180, th=tooltip.offsetHeight||120;
+  tooltip.style.left=(x+tw>window.innerWidth ? x-tw-28 : x)+'px';
+  tooltip.style.top =(y+th>window.innerHeight? y-th    : y)+'px';
+}
+
+// ── RACK CLICK ────────────────────────────────────────
+window.clickRack = function(el){
+  if(el.dataset.state==='vacant'){
+    if(confirm(`ต้องการจอง Rack ${el.dataset.id} หรือไม่?\n\nกรุณาติดต่อทีมงานผ่าน LINE เพื่อดำเนินการ`))
+      window.open('https://line.me/R/ti/p/@365pwgzr','_blank');
+  }
+};
+
+// ── MODAL ─────────────────────────────────────────────
+window.openModal  = id => document.getElementById(id).classList.add('open');
+window.closeModal = id => document.getElementById(id).classList.remove('open');
+document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg, ms=3500){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), ms);
+}
+window.showToast = showToast;
+
+// ── COPY ACCOUNT ──────────────────────────────────────
+window.copyAcct = function(){
+  navigator.clipboard.writeText('2203446139').then(()=>showToast('คัดลอกเลขบัญชีแล้ว ✓'));
+};
+
+// ── EXPORT CSV ────────────────────────────────────────
+window.exportCSV = function(){
+  const rows = [['Day','Energy kWh'],['Mon',320],['Tue',450],['Wed',360],['Thu',570],['Fri',610],['Sat',470],['Sun',530]];
+  const csv = rows.map(r=>r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download = 'terravolteco_energy.csv';
+  a.click();
+};
+
+// ── LOADER ────────────────────────────────────────────
+function hideLoader(){
+  const l = document.getElementById('loader');
+  l.classList.add('fade');
+  setTimeout(()=>l.style.display='none', 600);
+}
+
+// ── AMBIENT FLICKER ───────────────────────────────────
 setInterval(()=>{
+  const racks = document.querySelectorAll('.rack.occupied');
+  if(!racks.length) return;
+  const r = racks[Math.floor(Math.random()*racks.length)];
+  r.style.boxShadow='0 0 18px rgba(74,111,165,0.35)';
+  setTimeout(()=>{ r.style.boxShadow=''; },300);
+},400);
 
-const racks = document.querySelectorAll('.rack');
-
-const randomRack =
-racks[Math.floor(Math.random()*racks.length)];
-
-randomRack.style.boxShadow =
-'0 0 18px rgba(0,255,174,0.25)';
-
-setTimeout(()=>{
-
-if(!randomRack.classList.contains('active')){
-randomRack.style.boxShadow='';
-}
-
-},300);
-
-},250);
+// ── START ─────────────────────────────────────────────
+init();
 
 </script>
-
 </body>
 </html>
-```
