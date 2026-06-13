@@ -340,11 +340,11 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
     <div id="pay-panel-web3" style="display: none;">
       <div class="bank-box" style="border-color: rgba(0,217,255,0.3); background: rgba(0,217,255,0.02);">
         <div class="bank-row"><span class="bank-label">เครือข่าย</span><span class="bank-value" style="color:var(--cyan);">Polygon Mainnet</span></div>
-        <div class="bank-row"><span class="bank-label">รับเหรียญ</span><span class="bank-value">POL /USD Coin(PoS) </span></div>
+        <div class="bank-row"><span class="bank-label">รับเหรียญ</span><span class="bank-value">POL / USD Coin (PoS) </span></div>
         <div class="bank-row" style="flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
           <span class="bank-label">ที่อยู่กระเป๋าบริษัท (Company Wallet)</span>
           <div style="display:flex; gap:8px; align-items:center; width:100%;">
-            <span class="bank-value" id="company-wallet-disp" style="font-family:'Mono'; font-size:11px; color:var(--neon); overflow:hidden; text-overflow:ellipsis;">—</span>
+            <span class="bank-value" id="company-wallet-disp">—</span>
             <button class="copy-btn" onclick="copyCompanyWallet()">คัดลอก</button>
           </div>
         </div>
@@ -639,7 +639,7 @@ const CLOUDINARY_PRESET = "slips_unsigned";
 
 // ── COMPANY WEB3 CONFIG (Polygon Mainnet) ──────────────
 const COMPANY_WALLET_ADDRESS = "0x08426D97b96601299b95dDd9d4DBAe157Bf5F013";
-const POLYGON_CHAIN_ID = "0x137"; // Hex ของ Chain ID 137 (Polygon PoS)
+const POLYGON_CHAIN_ID = "0x137"; 
 const POLYGON_NETWORK_PARAMS = {
   chainId: POLYGON_CHAIN_ID,
   chainName: "Polygon Mainnet",
@@ -673,7 +673,6 @@ const DEMO_PACKAGES = [
   { name:"ENTERPRISE", price:"ติดต่อ", unit:"",      desc:"10+ เครื่อง / ASIC ใหญ่",features:["Dedicated Rack","SLA 99.9%","ทีมดูแลเฉพาะ","Custom Monitoring"], popular:false },
 ];
 
-// ผูกเลขกระเป๋าแสดงผลบนหน้าจอ Modal ทันทีเมื่อระบบรัน
 document.getElementById('company-wallet-disp').textContent = COMPANY_WALLET_ADDRESS;
 
 // ═══════════════════════════════════════════════════════
@@ -742,17 +741,24 @@ async function initLanding(){
 initLanding();
 
 function renderPricingLanding(plans){
-  document.getElementById('l-pricing').innerHTML = plans.map(p => `
+  document.getElementById('l-pricing').innerHTML = plans.map(p => {
+    const isContact = (p.price === 'ติดต่อ');
+    const onClickAction = isContact 
+      ? `window.open('https://line.me/R/ti/p/@365pwgzr', '_blank')` 
+      : `goTo('register')`;
+
+    return `
     <div class="plan ${p.popular?'popular':''}">
       ${p.popular ? '<div class="popular-badge">⭐ แนะนำ</div>' : ''}
       <div class="plan-name">${p.name}</div>
       <div class="plan-price">${p.price}<span>${p.unit}</span></div>
       <div class="plan-desc">${p.desc}</div>
       <ul class="plan-features">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
-      <button class="btn" style="width:100%" onclick="goTo('register')">
-        ${p.price==='ติดต่อ'?'ติดต่อเรา':'สมัครแพ็กเกจนี้'}
+      <button class="btn" style="width:100%; ${isContact ? 'background: linear-gradient(135deg, #06C755, #05b04b); color: white;' : ''}" onclick="${onClickAction}">
+        ${isContact ? '🟢 ติดต่อเราผ่าน LINE' : 'สมัครแพ็กเกจนี้'}
       </button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderPricingRegister(plans){
@@ -924,7 +930,6 @@ window.payOnChainNow = async function() {
     btn.disabled = true;
     btn.textContent = '⏳ กำลังตรวจสอบเครือข่ายบล็อกเชน...';
 
-    // ตรวจสอบเชนและบังคับให้กระเป๋าสลับมาที่ Polygon อัตโนมัติก่อนทำคำสั่งโอนเงิน
     const isPolygon = await checkAndSwitchToPolygon();
     if (!isPolygon) {
       showToast('❌ กรุณาสลับเครือข่ายกระเป๋าของคุณเป็น Polygon เพื่อชำระเงิน', 'error');
