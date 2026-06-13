@@ -212,7 +212,7 @@ nav{
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,0.03);margin-bottom:6px;font-size:12px;}
 .pay-date{color:var(--muted);}
 .pay-amount{color:var(--neon);font-family:'Orbitron';font-size:12px;}
-.pay-status-badge{font-size:10px;padding:3px 9px;border-radius999px;}
+.pay-status-badge{font-size:10px;padding:3px 9px;border-radius:999px;}
 .pay-status-badge.ok{background:rgba(0,255,174,0.1);color:var(--neon);border:1px solid rgba(0,255,174,0.2);}
 .pay-status-badge.due{background:rgba(255,184,77,0.1);color:var(--warning);border:1px solid rgba(255,184,77,0.2);}
 .pay-status-badge.pending-review{background:rgba(100,120,200,0.1);color:#93c5fd;border:1px solid rgba(100,120,200,0.2);}
@@ -305,29 +305,59 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
   <div class="modal">
     <button class="modal-close" onclick="closeModal('payModal')">✕</button>
     <h3>ชำระค่าบริการรายเดือน</h3>
-    <p class="modal-sub">โอนเงินแล้วแนบสลิปเพื่อยืนยัน</p>
-    <div class="bank-box">
-      <div class="bank-row"><span class="bank-label">ธนาคาร</span><span class="bank-value">กสิกรไทย (KBank)</span></div>
-      <div class="bank-row"><span class="bank-label">ชื่อบัญชี</span><span class="bank-value">บริษัท เทอร์ราโวลท์อีโค่ จำกัด</span></div>
-      <div class="bank-row">
-        <span class="bank-label">เลขบัญชี</span>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="bank-value">220-3-446-139</span>
-          <button class="copy-btn" onclick="copyText('2203446139','คัดลอกเลขบัญชีแล้ว')">คัดลอก</button>
+    <p class="modal-sub">เลือกช่องทางการชำระเงินที่สะดวก</p>
+    
+    <div style="display:flex; gap:8px; margin-bottom:16px;">
+      <button class="btn btn-sm" id="tab-btn-fiat" style="flex:1;" onclick="switchPayTab('fiat')">🏛️ โอนเงินธนาคาร</button>
+      <button class="btn btn-outline btn-sm" id="tab-btn-web3" style="flex:1; border-color:var(--cyan); color:var(--cyan);" onclick="switchPayTab('web3')">🌐 จ่ายผ่าน Web3</button>
+    </div>
+
+    <div id="pay-panel-fiat">
+      <div class="bank-box">
+        <div class="bank-row"><span class="bank-label">ธนาคาร</span><span class="bank-value">กสิกรไทย (KBank)</span></div>
+        <div class="bank-row"><span class="bank-label">ชื่อบัญชี</span><span class="bank-value">บริษัท เทอร์ราโวลท์อีโค่ จำกัด</span></div>
+        <div class="bank-row">
+          <span class="bank-label">เลขบัญชี</span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="bank-value">220-3-446-139</span>
+            <button class="copy-btn" onclick="copyText('2203446139','คัดลอกเลขบัญชีแล้ว')">คัดลอก</button>
+          </div>
         </div>
       </div>
+      <div class="form-group">
+        <label>จำนวนเงิน (บาท)</label>
+        <input type="number" id="pay-amount" placeholder="5500">
+      </div>
+      <div class="slip-upload" onclick="document.getElementById('slip-file').click()">
+        <div style="font-size:26px;">📎</div>
+        <p>แตะเพื่อแนบสลิปโอนเงิน</p>
+        <input type="file" id="slip-file" accept="image/*" style="display:none" onchange="previewSlip(this)">
+        <img id="slip-preview">
+      </div>
+      <button class="btn" style="width:100%" id="pay-submit-btn" onclick="submitPayment()">ยืนยันการชำระเงิน</button>
     </div>
-    <div class="form-group">
-      <label>จำนวนเงิน (บาท)</label>
-      <input type="number" id="pay-amount" placeholder="5500">
+
+    <div id="pay-panel-web3" style="display: none;">
+      <div class="bank-box" style="border-color: rgba(0,217,255,0.3); background: rgba(0,217,255,0.02);">
+        <div class="bank-row"><span class="bank-label">เครือข่าย</span><span class="bank-value" style="color:var(--cyan);">Polygon Mainnet</span></div>
+        <div class="bank-row"><span class="bank-label">รับเหรียญ</span><span class="bank-value">POL / TVE Token</span></div>
+        <div class="bank-row" style="flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
+          <span class="bank-label">ที่อยู่กระเป๋าบริษัท (Company Wallet)</span>
+          <div style="display:flex; gap:8px; align-items:center; width:100%;">
+            <span class="bank-value" id="company-wallet-disp" style="font-family:'Mono'; font-size:11px; color:var(--neon); overflow:hidden; text-overflow:ellipsis;">—</span>
+            <button class="copy-btn" onclick="copyCompanyWallet()">คัดลอก</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>จำนวนเหรียญที่ต้องชำระ (หน่วย POL)</label>
+        <input type="number" id="pay-crypto-amount" step="0.0001" placeholder="15.5">
+      </div>
+      <button class="btn" style="width:100%; background: linear-gradient(135deg, var(--cyan), #0055ff); color: white;" id="crypto-pay-btn" onclick="payOnChainNow()">
+        🚀 ส่งคำสั่งจ่ายเงินทันที (On-chain)
+      </button>
     </div>
-    <div class="slip-upload" onclick="document.getElementById('slip-file').click()">
-      <div style="font-size:26px;">📎</div>
-      <p>แตะเพื่อแนบสลิปโอนเงิน</p>
-      <input type="file" id="slip-file" accept="image/*" style="display:none" onchange="previewSlip(this)">
-      <img id="slip-preview">
-    </div>
-    <button class="btn" style="width:100%" id="pay-submit-btn" onclick="submitPayment()">ยืนยันการชำระเงิน</button>
+
   </div>
 </div>
 
@@ -607,6 +637,17 @@ const firebaseConfig = {
 const CLOUDINARY_CLOUD  = "dm3nft7va";
 const CLOUDINARY_PRESET = "slips_unsigned";
 
+// ── COMPANY WEB3 CONFIG (Polygon Mainnet) ──────────────
+const COMPANY_WALLET_ADDRESS = "0x08426D97b96601299b95dDd9d4DBAe157Bf5F013";
+const POLYGON_CHAIN_ID = "0x137"; // Hex ของ Chain ID 137 (Polygon PoS)
+const POLYGON_NETWORK_PARAMS = {
+  chainId: POLYGON_CHAIN_ID,
+  chainName: "Polygon Mainnet",
+  nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
+  rpcUrls: ["https://polygon-rpc.com/"],
+  blockExplorerUrls: ["https://polygonscan.com/"]
+};
+
 const app  = initializeApp(firebaseConfig);
 const db   = getFirestore(app);
 const auth = getAuth(app);
@@ -631,6 +672,9 @@ const DEMO_PACKAGES = [
   { name:"PRO",        price:"5,500", unit:"/เดือน", desc:"เครื่อง 3-5 ตัว ≤8kW",  features:["ทุกอย่างใน Starter","Priority Support","UPS ประกันไฟดับ","รายงานรายสัปดาห์"], popular:true },
   { name:"ENTERPRISE", price:"ติดต่อ", unit:"",      desc:"10+ เครื่อง / ASIC ใหญ่",features:["Dedicated Rack","SLA 99.9%","ทีมดูแลเฉพาะ","Custom Monitoring"], popular:false },
 ];
+
+// ผูกเลขกระเป๋าแสดงผลบนหน้าจอ Modal ทันทีเมื่อระบบรัน
+document.getElementById('company-wallet-disp').textContent = COMPANY_WALLET_ADDRESS;
 
 // ═══════════════════════════════════════════════════════
 // NAV & ROUTING
@@ -668,7 +712,6 @@ async function loadPackages(){
 }
 
 async function initLanding(){
-  // โหลดสถิติ (Stats)
   try{
     const snap = await getDoc(doc(db,"settings","stats"));
     const d = snap.exists() ? snap.data() : DEMO_STATS;
@@ -688,13 +731,12 @@ async function initLanding(){
     document.getElementById('l-temp').textContent     = DEMO_STATS.temp; 
   }
 
-  // โหลดและจัดการการเรนเดอร์แพ็กเกจราคา
   await loadPackages();
   renderPricingLanding(packages);
   renderPricingRegister(packages);
   
   if(packages.length > 0) {
-    selectPlan(0); // เลือกอันแรกเป็นค่าเริ่มต้น ป้องกันค่าหลุดเป็น null
+    selectPlan(0);
   }
 }
 initLanding();
@@ -798,15 +840,142 @@ async function updateWalletBalance() {
   if (!web3Provider || !walletAddress) return;
   try {
     const balance = await web3Provider.getBalance(walletAddress);
-    const bnbValue = ethers.formatEther(balance);
-    const formattedBalance = parseFloat(bnbValue).toFixed(4);
+    const polValue = ethers.formatEther(balance);
+    const formattedBalance = parseFloat(polValue).toFixed(4);
     
     document.getElementById('web3-balance-row').style.display = 'flex';
-    document.getElementById('web3-balance-val').textContent = `${formattedBalance} BNB`;
+    document.getElementById('web3-balance-val').textContent = `${formattedBalance} POL`;
   } catch (e) {
     console.error("โหลด Balance ล้มเหลว:", e);
   }
 }
+
+// ═══════════════════════════════════════════════════════
+// SWITCH PAY TAB & POLYGON AUTOMATIC HANDLING
+// ═══════════════════════════════════════════════════════
+window.switchPayTab = function(type) {
+  const fiatPanel = document.getElementById('pay-panel-fiat');
+  const web3Panel = document.getElementById('pay-panel-web3');
+  const fiatBtn   = document.getElementById('tab-btn-fiat');
+  const web3Btn   = document.getElementById('tab-btn-web3');
+
+  if(type === 'fiat') {
+    fiatPanel.style.display = 'block';
+    web3Panel.style.display = 'none';
+    fiatBtn.className = "btn btn-sm";
+    web3Btn.className = "btn btn-outline btn-sm";
+  } else {
+    fiatPanel.style.display = 'none';
+    web3Panel.style.display = 'block';
+    fiatBtn.className = "btn btn-outline btn-sm";
+    web3Btn.className = "btn btn-sm";
+    web3Btn.style.borderColor = 'var(--cyan)';
+    web3Btn.style.color = '#001a0f';
+  }
+};
+
+window.copyCompanyWallet = function() {
+  navigator.clipboard.writeText(COMPANY_WALLET_ADDRESS).then(() => {
+    showToast('คัดลอกที่อยู่กระเป๋าบริษัทแล้ว');
+  });
+};
+
+async function checkAndSwitchToPolygon() {
+  if (!window.ethereum) return false;
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: POLYGON_CHAIN_ID }],
+    });
+    return true;
+  } catch (switchError) {
+    if (switchError.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [POLYGON_NETWORK_PARAMS],
+        });
+        return true;
+      } catch (addError) {
+        console.error("เพิ่มเครือข่ายล้มเหลว:", addError);
+        return false;
+      }
+    }
+    console.error("สลับเครือข่ายล้มเหลว:", switchError);
+    return false;
+  }
+}
+
+window.payOnChainNow = async function() {
+  const btn = document.getElementById('crypto-pay-btn');
+  const cryptoAmount = document.getElementById('pay-crypto-amount').value;
+
+  if(!cryptoAmount || parseFloat(cryptoAmount) <= 0) {
+    showToast('กรุณากรอกจำนวนเหรียญให้ถูกต้อง', 'error');
+    return;
+  }
+  
+  if (!web3Signer) {
+    showToast('❌ กรุณากดเชื่อมต่อกระเป๋าที่หน้า Dashboard ก่อนทำรายการครับ', 'error');
+    return;
+  }
+
+  try {
+    btn.disabled = true;
+    btn.textContent = '⏳ กำลังตรวจสอบเครือข่ายบล็อกเชน...';
+
+    // ตรวจสอบเชนและบังคับให้กระเป๋าสลับมาที่ Polygon อัตโนมัติก่อนทำคำสั่งโอนเงิน
+    const isPolygon = await checkAndSwitchToPolygon();
+    if (!isPolygon) {
+      showToast('❌ กรุณาสลับเครือข่ายกระเป๋าของคุณเป็น Polygon เพื่อชำระเงิน', 'error');
+      btn.disabled = false;
+      btn.textContent = '🚀 ส่งคำสั่งจ่ายเงินทันที (On-chain)';
+      return;
+    }
+
+    const freshProvider = new ethers.BrowserProvider(window.ethereum);
+    const freshSigner = await freshProvider.getSigner();
+
+    btn.textContent = '⏳ กำลังรอการยืนยันธุรกรรมจากกระเป๋า...';
+
+    const tx = await freshSigner.sendTransaction({
+      to: COMPANY_WALLET_ADDRESS,
+      value: ethers.parseEther(cryptoAmount)
+    });
+
+    showToast('ส่งธุรกรรมเข้าสู่บล็อกเชน Polygon แล้ว กำลังรอการยืนยัน...');
+    const receipt = await tx.wait();
+    
+    showToast('✅ ชำระเงินผ่าน Polygon เสร็จสมบูรณ์!');
+    
+    const now = new Date();
+    const dateStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+    
+    await addDoc(collection(db, "payments"), {
+      memberId: currentUser.uid,
+      memberDocId: memberData?.id || null,
+      amount: parseFloat(cryptoAmount),
+      currency: "POL",
+      network: "Polygon",
+      txHash: receipt.hash,
+      status: "ok", 
+      date: dateStr,
+      createdAt: serverTimestamp()
+    });
+    
+    closeModal('payModal');
+    document.getElementById('pay-crypto-amount').value = '';
+    
+    if(currentUser) await loadMemberData(currentUser.uid);
+    
+  } catch (err) {
+    console.error(err);
+    showToast('❌ ธุรกรรมถูกยกเลิกหรือล้มเหลว: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 ส่งคำสั่งจ่ายเงินทันที (On-chain)';
+  }
+};
 
 // ═══════════════════════════════════════════════════════
 // RACK PICKER (Register Section)
@@ -1021,7 +1190,7 @@ function renderDashboard(m){
     ? hist.slice(-5).reverse().map(p=>`
         <div class="pay-row">
           <span class="pay-date">${p.date||'—'}</span>
-          <span class="pay-amount">฿${p.amount||'—'}</span>
+          <span class="pay-amount">${p.currency === 'POL' ? p.amount + ' POL' : '฿' + p.amount}</span>
           <span class="pay-status-badge ${p.status==='ok'?'ok':p.status==='pending-review'?'pending-review':'due'}">
             ${p.status==='ok'?'ชำระแล้ว':p.status==='pending-review'?'รอตรวจสอบ':'ค้างชำระ'}
           </span>
@@ -1120,6 +1289,7 @@ window.submitPayment = async function(){
       memberId:    currentUser.uid,
       memberDocId: memberData?.id || null,
       amount:    parseFloat(amount),
+      currency:  "THB",
       slipUrl,
       status:    'pending-review',
       date:      dateStr,
@@ -1196,7 +1366,6 @@ function hideLoader(){
   setTimeout(() => l.style.display='none', 600);
 }
 
-// ตัวอย่างระบบ visual effect แบบ Realtime บน Rack Map
 setInterval(() => {
   const racks = document.querySelectorAll('.rack.occupied');
   if(!racks.length) return;
