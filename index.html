@@ -103,7 +103,7 @@ nav{
 .ring:nth-child(3){inset:72px;animation-duration:6s;}
 .ring::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--neon);top:-7px;left:50%;box-shadow:0 0 10px var(--neon);}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.core{position:absolute;inset:90px;border-radius:50%;background:radial-gradient(circle,var(--neon),#03140d 70%);display:flex;justify-content:center;align-items:center;flex-direction:column;box-shadow:0 0 50px rgba(0,255,174,0.25);}
+.core{position:absolute;inset:90px;border-radius:50%;background:radial-gradient(circle,var(--neon),#03140d 70%);display:flex;justify;content:center;align-items:center;flex-direction:column;box-shadow:0 0 50px rgba(0,255,174,0.25);}
 .core h3{font-size:44px;font-family:'Orbitron';}
 .core p{color:#dbe4f0;font-size:13px;}
 
@@ -124,7 +124,7 @@ nav{
 
 /* PRICING */
 .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:28px;}
-.plan(background:rgba(10,18,32,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:24px;padding:26px;position:relative;transition:0.3s;}
+.plan{background:rgba(10,18,32,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:24px;padding:26px;position:relative;transition:0.3s;}
 .plan:hover{transform:translateY(-4px);}
 .plan.popular{border-color:rgba(0,255,174,0.4);box-shadow:0 0 30px rgba(0,255,174,0.1);}
 .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--neon),var(--cyan));color:#001a0f;font-weight:700;font-size:11px;padding:4px 14px;border-radius:999px;white-space:nowrap;}
@@ -1020,25 +1020,38 @@ window.payOnChainNow = async function() {
 };
 
 // ═══════════════════════════════════════════════════════
-// RACK PICKER (Register Section)
+// RACK PICKER (แก้ไขระบบตู้สำรอง 36 ช่องอัตโนมัติ)
 // ═══════════════════════════════════════════════════════
 async function loadRackPicker(){
-  let rm = { A:[], B:[] };
+  let rm = buildEmptyRacks();
   try{
     const snap = await getDocs(collection(db,"racks"));
-    snap.forEach(d => { const r=d.data(); if(rm[r.section]) rm[r.section].push({id:d.id,...r}); });
-    if(!rm.A.length && !rm.B.length) rm = buildEmptyRacks();
+    snap.forEach(d => { 
+      const r = d.data(); 
+      const sec = r.section;
+      if(rm[sec]){
+        const index = rm[sec].findIndex(item => item.id === d.id);
+        if(index !== -1) {
+          rm[sec][index] = { id: d.id, ...r };
+        }
+      }
+    });
     allRacks = rm;
-  }catch{ rm = buildEmptyRacks(); allRacks = rm; }
-  renderRackPicker(rm);
+  }catch(e){
+    console.error("โหลดตู้ล้มเหลว ใช้ระบบตู้เปล่าสำรอง:", e);
+    allRacks = rm;
+  }
+  renderRackPicker(allRacks);
 }
 
 function buildEmptyRacks(){
-  const rm = {A:[],B:[]};
+  const rm = { A:[], B:[] };
   ['A','B'].forEach(sec => {
-    for(let row=0;row<3;row++) for(let col=0;col<6;col++){
-      const id = `${sec}${String(row*6+col+1).padStart(2,'0')}`;
-      rm[sec].push({ id, section:sec, col, row, state:'vacant' });
+    for(let row=0; row<3; row++){ 
+      for(let col=0; col<6; col++){
+        const id = `${sec}${String(row*6+col+1).padStart(2,'0')}`;
+        rm[sec].push({ id, section:sec, col, row, state:'vacant', hashrate:'—', temperature:'—', uptime:'—' });
+      }
     }
   });
   return rm;
@@ -1267,17 +1280,22 @@ function renderDashboard(m){
 }
 
 // ═══════════════════════════════════════════════════════
-// RACK MAP SYNC (Dashboard Grid)
+// RACK MAP SYNC (แก้ไขระบบดึงตู้แบบ Realtime ให้ครบ 36 ช่อง)
 // ═══════════════════════════════════════════════════════
 function loadRackMap(member){
   if(unsubRacks) unsubRacks();
+  
   unsubRacks = onSnapshot(collection(db,"racks"), snap => {
-    const rm = {A:[],B:[]};
-    snap.forEach(d => { const r=d.data(); if(rm[r.section]) rm[r.section].push({id:d.id,...r}); });
-    if(!rm.A.length && !rm.B.length){
-      const empty = buildEmptyRacks();
-      rm.A = empty.A; rm.B = empty.B;
-    }
+    let rm = buildEmptyRacks();
+    snap.forEach(d => { 
+      const r = d.data(); 
+      if(rm[r.section]){
+        const index = rm[r.section].findIndex(item => item.id === d.id);
+        if(index !== -1) {
+          rm[r.section][index] = { id: d.id, ...r };
+        }
+      }
+    });
     renderRackMap(rm, member);
   });
 }
