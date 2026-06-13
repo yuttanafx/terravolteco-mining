@@ -340,7 +340,7 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
     <div id="pay-panel-web3" style="display: none;">
       <div class="bank-box" style="border-color: rgba(0,217,255,0.3); background: rgba(0,217,255,0.02);">
         <div class="bank-row"><span class="bank-label">เครือข่าย</span><span class="bank-value" style="color:var(--cyan);">Polygon Mainnet</span></div>
-        <div class="bank-row"><span class="bank-label">รับเหรียญ</span><span class="bank-value">POL / USD Coin(Pos)</span></div>
+        <div class="bank-row"><span class="bank-label">รับเหรียญ</span><span class="bank-value">POL / USD Coin(PoS)</span></div>
         <div class="bank-row" style="flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
           <span class="bank-label">ที่อยู่กระเป๋าบริษัท (Company Wallet)</span>
           <div style="display:flex; gap:8px; align-items:center; width:100%;">
@@ -615,7 +615,7 @@ footer{margin-top:40px;text-align:center;color:#475569;font-size:12px;padding-bo
 <script type="module">
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, getDocs,
-         collection, addDoc, onSnapshot, setDoc,
+         collection, addDoc, setDoc, onSnapshot,
          serverTimestamp, query, where,
          orderBy }                                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword,
@@ -711,7 +711,7 @@ async function loadPackages(){
 }
 
 async function initLanding(){
-  try{
+  try {
     const snap = await getDoc(doc(db,"settings","stats"));
     const d = snap.exists() ? snap.data() : DEMO_STATS;
     document.getElementById('l-hashrate').textContent = d.hashrate || "—";
@@ -724,7 +724,7 @@ async function initLanding(){
       document.getElementById('l-miners').textContent   = s.data().miners   || "—";
       document.getElementById('l-temp').textContent     = s.data().temp     || "—";
     });
-  }catch{ 
+  } catch { 
     document.getElementById('l-hashrate').textContent = DEMO_STATS.hashrate;
     document.getElementById('l-miners').textContent   = DEMO_STATS.miners;
     document.getElementById('l-temp').textContent     = DEMO_STATS.temp; 
@@ -968,7 +968,6 @@ window.payOnChainNow = async function() {
       createdAt: serverTimestamp()
     });
 
-    // อัปเดตสถานะของสมาชิกใน Firestore ให้เป็น ชำระแล้ว ทันที (Auto-Approve สำหรับคริปโต)
     if(memberData?.id) {
       await setDoc(doc(db, "members", memberData.id), { status: 'ชำระแล้ว' }, { merge: true });
     }
@@ -1102,34 +1101,40 @@ window.doRegister = async function(){
   const password = document.getElementById('reg-password').value;
   const pkg      = packages[regState.packageIdx];
 
-  try{
+  try {
+    // 1. สั่งสร้าง User ในระบบหลัก (Authentication) บัญชีคีย์บอร์ดของลูกค้าจะเกิดขึ้นที่นี่
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const uid  = cred.user.uid;
 
-    // 1. บันทึกข้อมูลสมาชิกลงในตารางหลัก members
-    await addDoc(collection(db,"members"), {
-      uid, name, email, phone,
-      rackId:    regState.rackId,
-      package:    pkg.name,
+    // 2. [อัปเดตระบบออโต้] บันทึกข้อมูลสมาชิกเข้าตาราง `members` โดยใช้ UID เป็นชื่อ Document ทันที
+    await setDoc(doc(db, "members", uid), {
+      uid: uid,
+      name: name,
+      email: email,
+      phone: phone,
+      rackId: regState.rackId,
+      package: pkg.name,
       packagePrice: pkg.price,
-      status:    'รอชำระเงิน',
-      hashrate:  '—', temperature:'—', uptime:'—',
-      payments:  [],
+      status: 'รอชำระเงิน',
+      hashrate: '—', 
+      temperature: '—', 
+      uptime: '—',
       createdAt: serverTimestamp()
     });
 
-    // 2. ล็อกสถานะช่อง Rack นั้นๆ ลงตาราง racks ทันที เพื่อป้องกันไม่ให้คนอื่นกดเลือกซ้ำซ้อน
-    const sec = regState.rackId.charAt(0); // แยก Section ออกมาจากตัวอักษรแรก (เช่น A หรือ B)
+    // 3. [อัปเดตระบบออโต้] ล็อกตำแหน่งช่อง Rack ในตาราง `racks` ให้สถานะเปลี่ยนเป็น มีเครื่อง (occupied) ทันที
+    const sec = regState.rackId.charAt(0);
     await setDoc(doc(db, "racks", regState.rackId), {
       section: sec,
-      state: "occupied", // ปรับให้ติดคนจองแล้ว
-      hashrate: "—", temperature: "—", uptime: "—"
+      state: "occupied", 
+      hashrate: "—", 
+      temperature: "—", 
+      uptime: "—"
     }, { merge: true });
 
-    showToast('✅ สมัครสมาชิกและจอง Rack สำเร็จ!');
+    showToast('✅ สมัครสมาชิกและล็อกตำแหน่ง Rack เรียบร้อยครับ!');
     
-    // 3. หลังจาก Firebase Auth ล็อกอินให้อัตโนมัติ ระบบจะตัดเข้า Dashboard 
-    // และรันคำสั่งเปิด Modal ชำระเงิน ล็อกหน้าจอขึ้นมาทันทีเพื่อให้ลูกค้าจ่ายบิลทันทีตามความจริง
+    // 4. บังคับเด้ง Modal หน้ากากจ่ายเงินขึ้นมาล็อกหน้าทันทีหลังจากเพจรีโหลดเข้าสู่หน้าแดชบอร์ด
     setTimeout(() => {
       openModal('payModal');
     }, 1200);
@@ -1139,7 +1144,7 @@ window.doRegister = async function(){
     if(e.code==='auth/email-already-in-use') msg = 'อีเมลนี้มีบัญชีอยู่แล้ว';
     if(e.code==='auth/invalid-email')        msg = 'รูปแบบอีเมลไม่ถูกต้อง';
     showFieldError(errEl, msg);
-    btn.disabled=false; btn.textContent='✅ ยืนยันสมัครใช้บริการ';
+    btn.disabled=false; btn.textContent = '✅ ยืนยันสมัครใช้บริการ';
   }
 };
 
@@ -1182,14 +1187,23 @@ window.doForgotPassword = async function(){
 // MEMBERS PROFILE & MEMBER DASHBOARD
 // ═══════════════════════════════════════════════════════
 async function loadMemberData(uid){
-  try{
-    const q    = query(collection(db,"members"), where("uid","==",uid));
-    const snap = await getDocs(q);
-    if(snap.empty){ renderDashboard(null); return; }
-    memberData = { id: snap.docs[0].id, ...snap.docs[0].data() };
+  try {
+    // ดึงข้อมูลสมาชิกจาก Document ID ที่ชื่อตรงกับ UID แบบออโต้
+    const docRef = doc(db, "members", uid);
+    const docSnap = await getDoc(docRef);
+    
+    if(!docSnap.exists()){ 
+      renderDashboard(null); 
+      return; 
+    }
+    
+    memberData = { id: docSnap.id, ...docSnap.data() };
     renderDashboard(memberData);
     loadRackMap(memberData);
-  }catch(e){ console.error(e); renderDashboard(null); }
+  } catch(e) { 
+    console.error(e); 
+    renderDashboard(null); 
+  }
 }
 
 function renderDashboard(m){
